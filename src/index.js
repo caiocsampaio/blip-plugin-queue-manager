@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "bootstrap/dist/css/bootstrap.css";
+import "./index.scss";
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { applyPolyfills, defineCustomElements } from 'blip-ds/loader';
+import { setHeight } from 'api/commonServices';
+import { IframeMessageProxy } from 'iframe-message-proxy';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+IframeMessageProxy.listen();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const rootDiv = document.getElementById("root");
+
+const documentObserver = new ResizeObserver(() => {
+  setHeight(rootDiv.scrollHeight);
+});
+
+documentObserver.observe(rootDiv);
+
+ReactDOM.render(<App />, document.getElementById("root"));
+
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
