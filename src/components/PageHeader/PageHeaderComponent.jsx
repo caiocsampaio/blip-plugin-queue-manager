@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Proptypes from "prop-types";
-import { BdsChip } from "blip-ds/dist/blip-ds-react";
+import { BdsChip, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ConfigContext } from "contexts/ConfigContext";
 
 export const PageHeaderComponent = () => {
@@ -9,12 +9,12 @@ export const PageHeaderComponent = () => {
   const version = context.VERSION;
   return (
     <>
-      <div className="pv2 header">
-        <h1 className="bp-fs-3 bp-c-city">
+      <div className="mt-4 mx-4">
+        <BdsTypo variant="fs-24" bold="semi-bold" className="hydrated inline">
           {title}
           &nbsp;
           <BdsChip disabled>{version}</BdsChip>
-        </h1>
+        </BdsTypo>
       </div>
       <div className="bp-divider-h"></div>
     </>

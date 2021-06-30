@@ -1,3 +1,4 @@
+import { Home } from 'components/Home';
 import { PageHeader } from 'components/PageHeader';
 import { PageTemplate } from 'components/PageTemplate';
 import { CommonProvider } from 'contexts/CommonContext';
@@ -11,7 +12,7 @@ function App() {
         <PageHeader />
         <PageTemplate>
           <CommonProvider>
-            
+            <Home />
           </CommonProvider>
         </PageTemplate>
       </ConfigProvider>

@@ -7,10 +7,12 @@ const ConfigContext = React.createContext();
 const ConfigProvider = ({ children }) => {
   const TITLE = _config.common.title;
   const VERSION = _config.common.version;
+  const CONFIG_RESOURCE = _config.resource.name;
 
   const value = {
     TITLE,
     VERSION,
+    CONFIG_RESOURCE
   };
   
   return (

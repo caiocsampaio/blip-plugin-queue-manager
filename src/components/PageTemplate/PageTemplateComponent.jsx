@@ -5,7 +5,7 @@ const PageTemplateComponent = ({
   children,
 }) => {
   return <>
-    <div className="pv4">
+    <div className="pt-2">
       <div className="bp-card card">
         {children}
       </div>

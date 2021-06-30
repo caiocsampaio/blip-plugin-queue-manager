@@ -1,4 +1,5 @@
 import { IframeMessageProxy } from 'iframe-message-proxy'
+import { getResource, setResource } from './iframeServices'
 
 export const startLoading = () => IframeMessageProxy.sendMessage({ action: 'startLoading' })
 
@@ -16,4 +17,14 @@ export const withLoading = async func => {
     } finally {
         stopLoading()
     }
-};
+}
+export const getOrCreateConfigResource = async (configResource) => {
+    let resource = {};
+    try {
+        resource = await getResource(configResource);
+    } catch (error) {
+        resource = {};
+        await setResource(configResource, 'application/json', {})
+    }
+    return resource;
+}
