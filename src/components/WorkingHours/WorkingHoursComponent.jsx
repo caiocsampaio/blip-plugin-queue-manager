@@ -1,33 +1,45 @@
-import { withLoading } from 'api/commonServices';
-import { getQueue } from 'api/iframeServices';
-import { BdsButton, BdsInput, BdsInputEditable, BdsPaper, BdsSwitch, BdsTypo } from 'blip-ds/dist/blip-ds-react';
-import React, { useEffect, useState } from 'react'
-import './workingHours.css'
+import { withLoading } from "api/commonServices";
+import { getQueue } from "api/iframeServices";
+import {
+  BdsButton,
+  BdsInput,
+  BdsInputEditable,
+  BdsPaper,
+  BdsSwitch,
+  BdsTypo,
+} from "blip-ds/dist/blip-ds-react";
+import React, { useEffect, useState } from "react";
+import "./workingHours.css";
 
 export const WorkingHoursComponent = ({ queueId }) => {
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
-  const [queue, setQueue] = useState({ name: "" })
-  const [weekdayHours, setWeekdayHours] = useState({opening: "", closing: ""});
-  const [weekendHours, setWeekendHours] = useState({});
+  const [queue, setQueue] = useState({ name: "" });
+  const [weekdayHours, setWeekdayHours] = useState({ opening: "", closing: "" });
+  const [weekendHours, setWeekendHours] = useState({ opening: "", closing: "" });
 
-  const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
-  const weekendDays = ['Sab', 'Dom'];
+  const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex"];
+  const weekendDays = ["Sab", "Dom"];
 
   useEffect(() => {
     withLoading(async () => {
       setQueue(await getQueue(queueId));
-    })
-  }, [queueId])
+    });
+  }, [queueId]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("working hours submit");
-  }
+  };
   return (
     <form onSubmit={(e) => handleFormSubmit(e)}>
       <div className="row">
         <div className="w-100">
-          <BdsInputEditable size="standard" inputName="queue-name" expand={true} value={queue.name} />
+          <BdsInputEditable
+            size="standard"
+            inputName="queue-name"
+            expand={true}
+            value={queue.name}
+          />
         </div>
         <div className="row">
           <BdsPaper elevation="static" className="m-3 p-4 auto-msg-background">
@@ -42,27 +54,35 @@ export const WorkingHoursComponent = ({ queueId }) => {
                   <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row">
-                        {weekDays.map(day => {
+                        {weekDays.map((day) => {
                           return (
                             <div className="d-flex flex-column m-2">
-                              <BdsSwitch name={`${day}-switch`} refer={`${day}-switch`}
-                                checked={false} onBdsChange={() => null} />
+                              <BdsSwitch
+                                name={`${day}-switch`}
+                                refer={`${day}-switch`}
+                                checked={false}
+                                onBdsChange={() => null}
+                              />
                               <span className="d-flex justify-content-center">{day}</span>
                             </div>
-                          )
+                          );
                         })}
                       </div>
                     </div>
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row justify-content-center">
-                        {weekendDays.map(day => {
+                        {weekendDays.map((day) => {
                           return (
                             <div className="d-flex flex-column m-2">
-                              <BdsSwitch name={`${day}-switch`} refer={`${day}-switch`}
-                                checked={false} onBdsChange={() => null} />
+                              <BdsSwitch
+                                name={`${day}-switch`}
+                                refer={`${day}-switch`}
+                                checked={false}
+                                onBdsChange={() => null}
+                              />
                               <span className="d-flex justify-content-center">{day}</span>
                             </div>
-                          )
+                          );
                         })}
                       </div>
                     </div>
@@ -77,24 +97,56 @@ export const WorkingHoursComponent = ({ queueId }) => {
                 </div>
                 <div className="d-flex flex-row justify-content-center">
                   <div>
-                    <BdsInput type="number" min="0" max="23" required placeholder="hora" value={weekdayHours.opening}/>
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="23"
+                      required
+                      placeholder="hora"
+                      value={weekdayHours.opening}
+                    />
                   </div>
                   <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">&nbsp;:&nbsp;</BdsTypo>
+                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
+                      &nbsp;:&nbsp;
+                    </BdsTypo>
                   </div>
                   <div>
-                    <BdsInput type="number" min="0" max="59" required placeholder="min" value={weekdayHours.closing} />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="59"
+                      required
+                      placeholder="min"
+                      value={weekdayHours.closing}
+                    />
                   </div>
                 </div>
                 <div className="d-flex flex-row justify-content-center mt-1">
                   <div>
-                    <BdsInput type="number" min="0" max="23" required placeholder="hora" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="23"
+                      required
+                      placeholder="hora"
+                      value={weekendHours.opening}
+                    />
                   </div>
                   <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">&nbsp;:&nbsp;</BdsTypo>
+                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
+                      &nbsp;:&nbsp;
+                    </BdsTypo>
                   </div>
                   <div>
-                    <BdsInput type="number" min="0" max="59" required placeholder="min" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="59"
+                      required
+                      placeholder="min"
+                      value={weekendHours.closing}
+                    />
                   </div>
                 </div>
               </div>
@@ -109,7 +161,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                     <BdsInput type="number" min="0" max="23" required placeholder="hora" />
                   </div>
                   <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">&nbsp;:&nbsp;</BdsTypo>
+                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
+                      &nbsp;:&nbsp;
+                    </BdsTypo>
                   </div>
                   <div>
                     <BdsInput type="number" min="0" max="59" required placeholder="min" />
@@ -120,7 +174,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                     <BdsInput type="number" min="0" max="23" required placeholder="hora" />
                   </div>
                   <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">&nbsp;:&nbsp;</BdsTypo>
+                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
+                      &nbsp;:&nbsp;
+                    </BdsTypo>
                   </div>
                   <div>
                     <BdsInput type="number" min="0" max="59" required placeholder="min" />
@@ -135,9 +191,11 @@ export const WorkingHoursComponent = ({ queueId }) => {
         <div className="d-flex justify-content-end">
           <BdsButton variant="secondary">Cancelar</BdsButton>
           &nbsp;
-          <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>Salvar</BdsButton>
+          <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>
+            Salvar
+          </BdsButton>
         </div>
       </div>
     </form>
-  )
-}
+  );
+};

@@ -4,7 +4,9 @@ import { PageTemplate } from 'components/PageTemplate';
 import { CommonProvider } from 'contexts/CommonContext';
 import { ConfigProvider } from 'contexts/ConfigContext';
 import React from 'react';
-import { EditQueuePage } from 'pages/EditQueue/EditQueuePage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { EditWorkingHours } from 'pages/EditWorkingHours';
+import { EditAutoMessage } from 'pages/EditAutoMessage';
 
 function App() {
   return (
@@ -13,8 +15,13 @@ function App() {
         <PageHeader />
         <PageTemplate>
           <CommonProvider>
-            {/* <Home /> */}
-            <EditQueuePage />
+            <BrowserRouter>
+              <Switch>
+                <Route path="/" exact={true} component={Home} />
+                <Route path="/editWorkingHours/:id" exact={true} component={EditWorkingHours} />
+                <Route path="/editAutoMessage/:id" exact={true} component={EditAutoMessage} />
+              </Switch>
+            </BrowserRouter>
           </CommonProvider>
         </PageTemplate>
       </ConfigProvider>

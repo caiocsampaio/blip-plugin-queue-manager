@@ -1,48 +1,73 @@
-import { BdsButton, BdsIcon, BdsInput, BdsPaper, BdsTooltip, BdsTypo } from 'blip-ds/dist/blip-ds-react';
-import { CommonContext } from 'contexts/CommonContext';
-import { ConfigContext } from 'contexts/ConfigContext';
-import React, { useContext, useState } from 'react';
+import { withLoading } from "api/commonServices";
+import { getQueue } from "api/iframeServices";
+import {
+  BdsButton,
+  BdsIcon,
+  BdsInput,
+  BdsInputEditable,
+  BdsPaper,
+  BdsTooltip,
+  BdsTypo,
+} from "blip-ds/dist/blip-ds-react";
+import { CommonContext } from "contexts/CommonContext";
+import { ConfigContext } from "contexts/ConfigContext";
+import React, { useContext, useEffect, useState } from "react";
 
-export const AutoMessageComponent = () => {
+export const AutoMessageComponent = ({ queueId }) => {
   const context = useContext(CommonContext);
   const { FORM } = useContext(ConfigContext);
+  const [queue, setQueue] = useState({ name: "" });
   const [autoMessage, setAutoMessage] = useState("");
-  const [isSaveDisabled, setIsSaveDisabled] = useState(true)
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+
+  useEffect(() => {
+    withLoading(async () => {
+      setQueue(await getQueue(queueId));
+    });
+  }, [queueId]);
 
   const handleAutoMessageChange = (value) => {
     setAutoMessage(value);
     const isFormValid = validateForm();
     setIsSaveDisabled(!isFormValid);
-  }
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("auto message submit")
-  }
+    console.log("auto message submit");
+  };
 
   const validateForm = () => {
     const isTextAreaValid = autoMessage.length >= FORM.autoMessageMinLength - 1;
     return isTextAreaValid;
-  }
+  };
 
   return (
     <form onSubmit={(e) => handleFormSubmit(e)}>
+      <div className="row w-100 pb-4">
+        <BdsInputEditable size="standard" inputName="queue-name" expand={true} value={queue.name} />
+      </div>
       <div className="flex-row d-flex">
         <BdsTypo variant="fs-20" bold="bold" className="hydrated">
           Mensagem automática: Atendimento indisponível
         </BdsTypo>
         &nbsp;
-        <BdsTooltip position="right-center" tooltipText="Explique que o seu atendimento não está disponível e quando voltará ao normal. Essa mensagem aparecerá para o cliente">
+        <BdsTooltip
+          position="right-center"
+          tooltipText="Explique que o seu atendimento não está disponível e quando voltará ao normal. Essa mensagem aparecerá para o cliente"
+        >
           <BdsIcon theme="solid" name="question" size="small" />
         </BdsTooltip>
       </div>
       <div className="row">
         <BdsPaper elevation="static" className="m-3 p-4 auto-msg-background">
           <BdsTypo variant="fs-14" bold="bold" className="hydrated">
-            Personalize a mensagem para o usuário, explique que o seu atendimento está indisponível e quando irá voltar ao normal.
+            Personalize a mensagem para o usuário, explique que o seu atendimento está indisponível
+            e quando irá voltar ao normal.
           </BdsTypo>
           <div className="col-lg-8 col-sm-12">
-            <BdsInput className="mt-4"
+            <BdsInput
+              className="mt-4"
               inputName="auto-message"
               placeholder="Hoje o nosso atendimento não está disponível. Voltaremos aos atendimentos no dia 00 às 0h."
               isTextarea={true}
@@ -65,7 +90,9 @@ export const AutoMessageComponent = () => {
         <div className="d-flex justify-content-end">
           <BdsButton variant="secondary">Cancelar</BdsButton>
           &nbsp;
-          <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>Salvar</BdsButton>
+          <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>
+            Salvar
+          </BdsButton>
         </div>
       </div>
       {/* <div className="row">
@@ -83,5 +110,5 @@ export const AutoMessageComponent = () => {
         </div>
       </div> */}
     </form>
-  )
-}
+  );
+};

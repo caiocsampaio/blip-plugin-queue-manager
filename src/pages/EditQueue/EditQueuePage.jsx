@@ -1,15 +1,15 @@
-import { BdsButton, BdsIcon, BdsInput, BdsPaper, BdsTooltip, BdsTypo } from 'blip-ds/dist/blip-ds-react';
 import { AutoMessage } from 'components/AutoMessage';
 import { WorkingHours } from 'components/WorkingHours';
-import { CommonContext } from 'contexts/CommonContext';
-import { ConfigContext } from 'contexts/ConfigContext';
-import React, { useContext, useState } from 'react'
+import React from 'react'
+import { useParams } from 'react-router-dom';
 
 export const EditQueuePage = () => {
+  // @ts-ignore
+  let { id } = useParams()
   return (
     <div>
-      {/* <AutoMessage /> */}
-      <WorkingHours queueId="wppsaquenaologado" />
+      <WorkingHours queueId={id} />
+      <AutoMessage queueId={id} />
     </div>
   )
 }

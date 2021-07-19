@@ -8,7 +8,7 @@ import { setHeight } from 'api/commonServices';
 import { IframeMessageProxy } from 'iframe-message-proxy';
 
 console.log(
-`Developed by Caio Sampaio.
+  `Developed by Caio Sampaio.
 
 Feel free to email me with any sugestions or (possible) bugs you find: caiosp@take.net`
 )
@@ -23,7 +23,10 @@ const documentObserver = new ResizeObserver(() => {
 
 documentObserver.observe(rootDiv);
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <App />
+  , document.getElementById("root")
+);
 
 applyPolyfills().then(() => {
   defineCustomElements(window);
