@@ -1,9 +1,10 @@
-import { Home } from 'components/Home';
+import { Home } from 'pages/Home';
 import { PageHeader } from 'components/PageHeader';
 import { PageTemplate } from 'components/PageTemplate';
 import { CommonProvider } from 'contexts/CommonContext';
 import { ConfigProvider } from 'contexts/ConfigContext';
 import React from 'react';
+import { EditQueuePage } from 'pages/EditQueue/EditQueuePage';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <PageHeader />
         <PageTemplate>
           <CommonProvider>
-            <Home />
+            {/* <Home /> */}
+            <EditQueuePage />
           </CommonProvider>
         </PageTemplate>
       </ConfigProvider>

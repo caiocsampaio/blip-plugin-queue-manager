@@ -71,9 +71,28 @@ export const getQueues = async () => {
     },
   });
   
-  if (response.status === 'failure') {
+  if (!response || response.status === 'failure') {
     return {};
   }
 
   return response.items;
+}
+
+export const getQueue = async (id) => {
+  const { response } = await IframeMessageProxy.sendMessage({
+    action: ACTION_SEND_COMMAND,
+    content: {
+      command: {
+        to: TO_POSTMASTER_DESK,
+        method: "get",
+        uri: `/attendance-queues/${id}`,
+      },
+    },
+  });
+  
+  if (!response || response.status === 'failure') {
+    return {};
+  }
+
+  return response;
 }

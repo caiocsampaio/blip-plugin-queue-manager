@@ -4,5 +4,6 @@
     "jsx": "react",
     "checkJs": true,
     "resolveJsonModule": true
-  }
+  },
+  "exclude": ["node_modules"]
 }

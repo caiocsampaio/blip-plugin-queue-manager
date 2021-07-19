@@ -1,16 +1,14 @@
-import { startLoading, stopLoading } from 'api/commonServices';
-import { BdsButton, BdsButtonIcon, BdsPaper, BdsSwitch, BdsTypo } from 'blip-ds/dist/blip-ds-react'
+import { sortQueues } from 'api/helpersServices';
+import { BdsButtonIcon, BdsPaper, BdsSwitch, BdsTypo } from 'blip-ds/dist/blip-ds-react'
 import { CommonContext } from 'contexts/CommonContext'
 import React, { useContext, useEffect, useState } from 'react'
 
-export function HomeComponent() {
+export const HomePage = () => {
   const context = useContext(CommonContext);
   const [queues, setQueues] = useState([]);
-  const [config, setConfig] = useState({});
 
   useEffect(() => {
-    setQueues(context.queues);
-    setConfig(context.queueConfig);
+    setQueues(sortQueues(context.queues));
   }, [context])
 
   const handleEditQueue = (queueId) => {
