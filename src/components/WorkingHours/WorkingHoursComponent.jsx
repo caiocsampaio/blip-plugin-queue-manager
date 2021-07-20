@@ -94,6 +94,18 @@ export const WorkingHoursComponent = ({ queueId }) => {
     }
   };
 
+  const handleInputBlur = (e) => {
+    console.log('e :>> ', e);
+    let value = e.target.value;
+    console.log('value :>> ', value);
+    if (value.length < 2 && parseInt(value) < 10) {
+      value = `0${value}`;
+    }
+    console.log('value :>> ', value);
+    e.target.value = value;
+    console.log('e :>> ', e);
+  }
+
   const handleCancelClick = () => {
     // TODO comparar com o initialState;
     history.goBack();
@@ -174,6 +186,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekdays.from[0]}
                       ref={(input) => (inputsRef.current["weekdayFromHour"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                   <div className="mt-2">
@@ -191,6 +204,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekdays.from[1]}
                       ref={(input) => (inputsRef.current["weekdayFromMin"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                 </div>
@@ -205,6 +219,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekends.from[0]}
                       ref={(input) => (inputsRef.current["weekendFromHour"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                   <div className="mt-2">
@@ -222,6 +237,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekends.from[1]}
                       ref={(input) => (inputsRef.current["weekendFromMin"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                 </div>
@@ -243,6 +259,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekdays.to[0]}
                       ref={(input) => (inputsRef.current["weekdayToHour"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                   <div className="mt-2">
@@ -260,6 +277,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekdays.to[1]}
                       ref={(input) => (inputsRef.current["weekdayToMin"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                 </div>
@@ -274,6 +292,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekends.to[0]}
                       ref={(input) => (inputsRef.current["weekendToHour"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                   <div className="mt-2">
@@ -291,6 +310,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       value={queueData.hours.weekends.to[1]}
                       ref={(input) => (inputsRef.current["weekendToMin"] = input)}
                       onBdsChange={handleHoursChange}
+                      onBdsOnBlur={handleInputBlur}
                     />
                   </div>
                 </div>
