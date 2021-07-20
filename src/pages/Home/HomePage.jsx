@@ -1,5 +1,12 @@
+import { changeQueueStatus } from "api/blipServices";
 import { sortQueues } from "api/helpersServices";
-import { BdsButtonIcon, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
+import {
+  BdsButtonIcon,
+  BdsPaper,
+  BdsSwitch,
+  BdsTooltip,
+  BdsTypo,
+} from "blip-ds/dist/blip-ds-react";
 import { CommonContext } from "contexts/CommonContext";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -12,8 +19,9 @@ export const HomePage = () => {
     setQueues(sortQueues(context.queues));
   }, [context]);
 
-  const handleSwitchQueue = (queueId) => {
-    console.log("handleSwitchQueue ", queueId);
+  const handleSwitchQueue = async (e, queue) => {
+    const checked = e.target.checked;
+    await changeQueueStatus(checked, queue);
   };
 
   return (
@@ -36,10 +44,14 @@ export const HomePage = () => {
               <div className="col-lg-2 col-sm-6">
                 <div className="d-flex justify-content-end">
                   <Link to={`/editAutoMessage/${queue.id}`}>
-                    <BdsButtonIcon icon="email" variant="secondary" size="short" />
+                    <BdsTooltip position="top-center" tooltipText="Mensagem automática">
+                      <BdsButtonIcon icon="email" variant="secondary" size="short" />
+                    </BdsTooltip>
                   </Link>
                   <Link to={`/editWorkingHours/${queue.id}`}>
-                    <BdsButtonIcon icon="clock" variant="secondary" size="short" />
+                    <BdsTooltip position="top-center" tooltipText="Horários">
+                      <BdsButtonIcon icon="clock" variant="secondary" size="short" />
+                    </BdsTooltip>
                   </Link>
                   <div className="border-end border-2"></div>
                   <div className="d-flex align-items-center m-2">
@@ -47,7 +59,7 @@ export const HomePage = () => {
                       name={`${queue.id}-switch`}
                       refer={`${queue.id}-switch`}
                       checked={queue.isActive}
-                      onBdsChange={() => handleSwitchQueue(queue.id)}
+                      onBdsChange={(e) => handleSwitchQueue(e, queue)}
                     />
                   </div>
                 </div>

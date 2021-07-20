@@ -8,7 +8,7 @@ import {
   BdsSwitch,
   BdsTypo,
 } from "blip-ds/dist/blip-ds-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./workingHours.css";
 
 export const WorkingHoursComponent = ({ queueId }) => {
@@ -16,6 +16,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const [queue, setQueue] = useState({ name: "" });
   const [weekdayHours, setWeekdayHours] = useState({ opening: "", closing: "" });
   const [weekendHours, setWeekendHours] = useState({ opening: "", closing: "" });
+  const formHours = useRef(null);
 
   const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex"];
   const weekendDays = ["Sab", "Dom"];
@@ -28,10 +29,10 @@ export const WorkingHoursComponent = ({ queueId }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("working hours submit");
+    console.log(formHours);
   };
   return (
-    <form onSubmit={(e) => handleFormSubmit(e)}>
+    <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
       <div className="row">
         <div className="w-100">
           <BdsInputEditable
@@ -56,7 +57,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       <div className="d-flex flex-row">
                         {weekDays.map((day) => {
                           return (
-                            <div className="d-flex flex-column m-2">
+                            <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
                                 name={`${day}-switch`}
                                 refer={`${day}-switch`}
@@ -73,7 +74,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       <div className="d-flex flex-row justify-content-center">
                         {weekendDays.map((day) => {
                           return (
-                            <div className="d-flex flex-column m-2">
+                            <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
                                 name={`${day}-switch`}
                                 refer={`${day}-switch`}

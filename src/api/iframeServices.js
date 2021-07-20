@@ -5,6 +5,7 @@ const ACTION_SEND_COMMAND = _config.iframe.sendCommandAction;
 // const DESTINATION_MESSAGING_HUB = _config.iframe.messagingHub;
 const TO_POSTMASTER_MSGING = _config.iframe.msging;
 const TO_POSTMASTER_DESK = _config.iframe.desk;
+const QUEUE_JSON_TYPE = _config.iframe.queueType;
 
 export const getAccount = async () => {
   const { response: account } = await IframeMessageProxy.sendMessage({
@@ -25,7 +26,7 @@ export const getResources = async () => {
       },
     },
   });
-  console.log(`response`, response)
+
   return response;
 };
 
@@ -94,5 +95,21 @@ export const getQueue = async (id) => {
     return {};
   }
 
+  return response;
+}
+
+export const setQueue = async (queue) => {
+  const { response } = await IframeMessageProxy.sendMessage({
+    action: ACTION_SEND_COMMAND,
+    content: {
+      command: {
+        to: TO_POSTMASTER_DESK,
+        method: "set",
+        uri: `/attendance-queues`,
+        type: QUEUE_JSON_TYPE,
+        resource: queue
+      },
+    },
+  });
   return response;
 }
