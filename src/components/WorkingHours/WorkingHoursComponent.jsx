@@ -1,4 +1,5 @@
-import { withLoading } from "api/commonServices";
+import { getQueueResource, setQueueResource } from "api/blipServices";
+import { showToast, withLoading } from "api/commonServices";
 import { getQueue } from "api/iframeServices";
 import {
   BdsButton,
@@ -10,37 +11,99 @@ import {
 } from "blip-ds/dist/blip-ds-react";
 import React, { useEffect, useRef, useState } from "react";
 import "./workingHours.css";
+import { useHistory } from "react-router-dom";
 
 export const WorkingHoursComponent = ({ queueId }) => {
+  const history = useHistory();
+  const formHours = useRef();
+  const inputsRef = useRef({});
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
   const [queue, setQueue] = useState({ name: "" });
-  const [weekdayHours, setWeekdayHours] = useState({ opening: "", closing: "" });
-  const [weekendHours, setWeekendHours] = useState({ opening: "", closing: "" });
-  const formHours = useRef(null);
+  const [resource, setResource] = useState({});
+  const [initialState, setInitialState] = useState({});
+  const [queueData, setQueueData] = useState(null);
 
-  const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex"];
-  const weekendDays = ["Sab", "Dom"];
+  const translate = {
+    mon: "Seg",
+    tue: "Ter",
+    wed: "Qua",
+    thu: "Qui",
+    fri: "Sex",
+    sat: "Sab",
+    sun: "Dom",
+  };
 
   useEffect(() => {
     withLoading(async () => {
       setQueue(await getQueue(queueId));
+      const resourceResponse = await getQueueResource();
+      if (!!resourceResponse) {
+        setResource(resourceResponse);
+      }
     });
   }, [queueId]);
 
-  const handleFormSubmit = (e) => {
+  useEffect(() => {
+    const data = resource[queue.name];
+    if (data) {
+      setQueueData(data);
+      setInitialState(data);
+    }
+  }, [resource, queue]);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(formHours);
+    let newResource = resource;
+    newResource[queue.name] = queueData;
+    const response = await setQueueResource(newResource);
+    const success = response !== null;
+    showToast({
+      type: success ? "success" : "danger",
+      message: success ? "Configurações salvas com sucesso" : "Erro ao salvar configurações",
+    });
+    history.push('/');
   };
-  return (
+
+  const handleSwitchChange = (e) => {
+    const isActive = e.target.checked;
+    let newData = queueData;
+    newData.days[e.target.name] = isActive;
+    setQueueData(newData);
+  };
+
+  const handleHoursChange = () => {
+    if (Object.keys(inputsRef.current).length > 0) {
+      let newQueueData = queueData;
+      newQueueData.hours = {
+        weekdays: {
+          from: [
+            inputsRef.current["weekdayFromHour"].value,
+            inputsRef.current["weekdayFromMin"].value,
+          ],
+          to: [inputsRef.current["weekdayToHour"].value, inputsRef.current["weekdayToMin"].value],
+        },
+        weekends: {
+          from: [
+            inputsRef.current["weekendFromHour"].value,
+            inputsRef.current["weekendFromMin"].value,
+          ],
+          to: [inputsRef.current["weekendToHour"].value, inputsRef.current["weekendToMin"].value],
+        },
+      };
+      setQueueData(newQueueData);
+    }
+  };
+
+  const handleCancelClick = () => {
+    // TODO comparar com o initialState;
+    history.goBack();
+  };
+
+  return queueData ? (
     <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
       <div className="row">
         <div className="w-100">
-          <BdsInputEditable
-            size="standard"
-            inputName="queue-name"
-            expand={true}
-            value={queue.name}
-          />
+          <BdsTypo variant="fs-24">{queue.name}</BdsTypo>
         </div>
         <div className="row">
           <BdsPaper elevation="static" className="m-3 p-4 auto-msg-background">
@@ -55,35 +118,39 @@ export const WorkingHoursComponent = ({ queueId }) => {
                   <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row">
-                        {weekDays.map((day) => {
-                          return (
+                        {Object.keys(queueData.days).map((day) => {
+                          return day !== "sat" && day !== "sun" ? (
                             <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
-                                name={`${day}-switch`}
+                                name={`${day}`}
                                 refer={`${day}-switch`}
-                                checked={false}
-                                onBdsChange={() => null}
+                                checked={queueData.days[day]}
+                                onBdsChange={handleSwitchChange}
                               />
-                              <span className="d-flex justify-content-center">{day}</span>
+                              <span className="d-flex justify-content-center">
+                                {translate[day]}
+                              </span>
                             </div>
-                          );
+                          ) : null;
                         })}
                       </div>
                     </div>
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row justify-content-center">
-                        {weekendDays.map((day) => {
-                          return (
+                        {Object.keys(queueData.days).map((day) => {
+                          return day === "sat" || day === "sun" ? (
                             <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
-                                name={`${day}-switch`}
+                                name={`${day}`}
                                 refer={`${day}-switch`}
-                                checked={false}
-                                onBdsChange={() => null}
+                                checked={queueData.days[day]}
+                                onBdsChange={handleSwitchChange}
                               />
-                              <span className="d-flex justify-content-center">{day}</span>
+                              <span className="d-flex justify-content-center">
+                                {translate[day]}
+                              </span>
                             </div>
-                          );
+                          ) : null;
                         })}
                       </div>
                     </div>
@@ -104,7 +171,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       required
                       placeholder="hora"
-                      value={weekdayHours.opening}
+                      value={queueData.hours.weekdays.from[0]}
+                      ref={(input) => (inputsRef.current["weekdayFromHour"] = input)}
+                      onBdsChange={handleHoursChange}
                     />
                   </div>
                   <div className="mt-2">
@@ -119,7 +188,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       required
                       placeholder="min"
-                      value={weekdayHours.closing}
+                      value={queueData.hours.weekdays.from[1]}
+                      ref={(input) => (inputsRef.current["weekdayFromMin"] = input)}
+                      onBdsChange={handleHoursChange}
                     />
                   </div>
                 </div>
@@ -131,7 +202,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       required
                       placeholder="hora"
-                      value={weekendHours.opening}
+                      value={queueData.hours.weekends.from[0]}
+                      ref={(input) => (inputsRef.current["weekendFromHour"] = input)}
+                      onBdsChange={handleHoursChange}
                     />
                   </div>
                   <div className="mt-2">
@@ -146,7 +219,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       required
                       placeholder="min"
-                      value={weekendHours.closing}
+                      value={queueData.hours.weekends.from[1]}
+                      ref={(input) => (inputsRef.current["weekendFromMin"] = input)}
+                      onBdsChange={handleHoursChange}
                     />
                   </div>
                 </div>
@@ -159,7 +234,16 @@ export const WorkingHoursComponent = ({ queueId }) => {
                 </div>
                 <div className="d-flex flex-row justify-content-center">
                   <div>
-                    <BdsInput type="number" min="0" max="23" required placeholder="hora" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="23"
+                      required
+                      placeholder="hora"
+                      value={queueData.hours.weekdays.to[0]}
+                      ref={(input) => (inputsRef.current["weekdayToHour"] = input)}
+                      onBdsChange={handleHoursChange}
+                    />
                   </div>
                   <div className="mt-2">
                     <BdsTypo variant="fs-20" bold="regular" className="hydrated">
@@ -167,12 +251,30 @@ export const WorkingHoursComponent = ({ queueId }) => {
                     </BdsTypo>
                   </div>
                   <div>
-                    <BdsInput type="number" min="0" max="59" required placeholder="min" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="59"
+                      required
+                      placeholder="min"
+                      value={queueData.hours.weekdays.to[1]}
+                      ref={(input) => (inputsRef.current["weekdayToMin"] = input)}
+                      onBdsChange={handleHoursChange}
+                    />
                   </div>
                 </div>
                 <div className="d-flex flex-row justify-content-center mt-1">
                   <div>
-                    <BdsInput type="number" min="0" max="23" required placeholder="hora" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="23"
+                      required
+                      placeholder="hora"
+                      value={queueData.hours.weekends.to[0]}
+                      ref={(input) => (inputsRef.current["weekendToHour"] = input)}
+                      onBdsChange={handleHoursChange}
+                    />
                   </div>
                   <div className="mt-2">
                     <BdsTypo variant="fs-20" bold="regular" className="hydrated">
@@ -180,7 +282,16 @@ export const WorkingHoursComponent = ({ queueId }) => {
                     </BdsTypo>
                   </div>
                   <div>
-                    <BdsInput type="number" min="0" max="59" required placeholder="min" />
+                    <BdsInput
+                      type="number"
+                      min="0"
+                      max="59"
+                      required
+                      placeholder="min"
+                      value={queueData.hours.weekends.to[1]}
+                      ref={(input) => (inputsRef.current["weekendToMin"] = input)}
+                      onBdsChange={handleHoursChange}
+                    />
                   </div>
                 </div>
               </div>
@@ -190,7 +301,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
       </div>
       <div className="row">
         <div className="d-flex justify-content-end">
-          <BdsButton variant="secondary">Cancelar</BdsButton>
+          <BdsButton variant="secondary" onClick={handleCancelClick}>
+            Cancelar
+          </BdsButton>
           &nbsp;
           <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>
             Salvar
@@ -198,5 +311,5 @@ export const WorkingHoursComponent = ({ queueId }) => {
         </div>
       </div>
     </form>
-  );
+  ) : null;
 };

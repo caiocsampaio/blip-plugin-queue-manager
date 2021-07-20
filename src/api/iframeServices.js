@@ -30,14 +30,14 @@ export const getResources = async () => {
   return response;
 };
 
-export const getResource = async (resourceName) => {
+export const getResource = async (resource) => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
       command: {
         to: TO_POSTMASTER_MSGING,
         method: "get",
-        uri: `/resources/${resourceName}`,
+        uri: `/resources/${resource}`,
       },
     },
   });

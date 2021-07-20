@@ -1,0 +1,64 @@
+{
+  "AppLogado": {
+    "days": {
+      "mon": true,
+      "tue": true,
+      "wed": true,
+      "thu": true,
+      "fri": true,
+      "sat": true,
+      "sun": false
+    },
+    "hours": {
+      "weekdays": {
+        "from": [
+          "08",
+          "00"
+        ],
+        "to": [
+          "21",
+          "00"
+        ]
+      },
+      "weekends": {
+        "from": [
+          "10",
+          "00"
+        ],
+        "to": [
+          "18",
+          "00"
+        ]
+      }
+    },
+    "autoMessage": "Hoje não estamos atendendo."
+  },
+  "Default": {
+    "days": {
+      "mon": false,
+      "tue": false,
+      "wed": false,
+      "thu": false,
+      "fri": false,
+      "sat": true,
+      "sun": false
+    },
+    "hours": {
+      "weekdays": {
+        "from": [
+          "",
+          ""
+        ],
+        "to": [
+          "",
+          ""
+        ]
+      },
+      "weekends": {
+        "from": ["10","00"],
+        "to": ["18","00"]
+      }
+    },
+    "autoMessage": ""
+  }
+}
