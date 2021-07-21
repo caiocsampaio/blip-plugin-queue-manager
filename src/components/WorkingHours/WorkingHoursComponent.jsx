@@ -1,5 +1,5 @@
 import { getQueueResource, setQueueResource } from "api/blipServices";
-import { showToast, withLoading } from "api/commonServices";
+import { showToast, withLoading, withoutLoading } from "api/commonServices";
 import { getQueue } from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -53,13 +53,13 @@ export const WorkingHoursComponent = ({ queueId }) => {
   };
 
   useEffect(() => {
-    withLoading(async () => {
+    withoutLoading(async () => {
       setQueue(await getQueue(queueId));
     });
   }, [queueId]);
 
   useEffect(() => {
-    withLoading(async () => {
+    withoutLoading(async () => {
       const resourceResponse = await getQueueResource();
       if (!!resourceResponse) {
         setResource(resourceResponse);
