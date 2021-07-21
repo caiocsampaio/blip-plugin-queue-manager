@@ -1,12 +1,25 @@
+//#region IMPORTS
 import { getQueueResource, setQueueResource } from "api/blipServices";
-import { showToast, withLoading, withoutLoading } from "api/commonServices";
-import { getQueue } from "api/iframeServices";
-import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
-import React, { useEffect, useRef, useState } from "react";
-import "./workingHours.css";
-import { useHistory } from "react-router-dom";
+import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidForm, validateForm } from "api/formServices";
+import { getQueue } from "api/iframeServices";
+import {
+  BdsAlert,
+  BdsAlertActions,
+  BdsAlertBody,
+  BdsAlertHeader,
+  BdsButton,
+  BdsInput,
+  BdsPaper,
+  BdsSwitch,
+  BdsTypo,
+} from "blip-ds/dist/blip-ds-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Prompt, useHistory } from "react-router-dom";
+import "./workingHours.css";
+//#endregion
 
+//#region DEFAULT DATA
 const defaultQueueData = {
   days: {
     mon: false,
@@ -29,8 +42,11 @@ const defaultQueueData = {
   },
   autoMessage: "",
 };
+//#endregion
 
 export const WorkingHoursComponent = ({ queueId }) => {
+  //#region USE STATE CALLS
+  const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
   const history = useHistory();
   const formHours = useRef();
   const [isSaveDisabled, setIsSaveDisabled] = useState(false);
@@ -41,6 +57,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const [errors, setErrors] = useState({});
   const [isWeekdayDanger, setIsWeekdayDanger] = useState(false);
   const [isWeekendDanger, setIsWeekendDanger] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [goBack, setGoBack] = useState(false);
+  //#endregion
 
   const translate = {
     mon: "Seg",
@@ -52,6 +71,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
     sun: "Dom",
   };
 
+  //#region USE EFFECT CALLS
   useEffect(() => {
     withoutLoading(async () => {
       setQueue(await getQueue(queueId));
@@ -87,10 +107,14 @@ export const WorkingHoursComponent = ({ queueId }) => {
     }
   }, [queueData]);
 
-  useEffect(() => {}, [errors]);
+  useEffect(() => {
+    if (goBack) {
+      history.goBack();
+    }
+  }, [goBack]);
+  //#endregion
 
   const handleFormSubmit = async (e) => {
-    // TODO VERIFICAR SE OS MINUTOS ESTÃO VAZIOS E ADICIONAR COM '00' NO MOMENTO DO ENVIO
     e.preventDefault();
     if (Object.values(errors).find((error) => !!error)) {
       showFeedbackInvalidForm(errors);
@@ -101,11 +125,20 @@ export const WorkingHoursComponent = ({ queueId }) => {
     const response = await setQueueResource(newResource);
     const success = response !== null;
     showToast({
+      position: "bottom-right",
+      title: success ? null : "Algo deu errado...",
       type: success ? "success" : "danger",
-      message: success ? "Configurações salvas com sucesso" : "Erro ao salvar configurações",
+      message: success
+        ? "Fila salva com sucesso!"
+        : "Houve um erro ao salvar a fila, tente novamente.",
     });
-    history.push("/");
+    if (success) {
+      setShouldBlockNavigation(false);
+      history.push("/");
+    }
   };
+
+  //#region HANDLE INPUTS CHANGES 
 
   const handleSwitchChange = (e) => {
     const isActive = e.target.checked;
@@ -177,14 +210,34 @@ export const WorkingHoursComponent = ({ queueId }) => {
     }
     e.target.value = value;
   };
+  //#endregion
 
+  //#region HANDLE NAVIGATION
   const handleCancelClick = () => {
-    // TODO comparar com o initialState;
-    history.push("/");
+    history.goBack();
   };
+
+  const handleBlockNavigation = () => {
+    const hasFormChanged = queueData != initialState;
+    if (hasFormChanged) {
+      setIsModalOpen(true);
+      return false;
+    }
+  };
+
+  const handleModalBtnClick = (isConfirmed) => {
+    console.log("isConfirmed :>> ", isConfirmed);
+    setIsModalOpen(false);
+    if (isConfirmed) {
+      setShouldBlockNavigation(false);
+      setGoBack(true);
+    }
+  };
+  //#endregion
 
   return queueData ? (
     <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
+      <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row">
         <div className="w-100">
           <BdsTypo variant="fs-24">{queue.name}</BdsTypo>
@@ -393,6 +446,24 @@ export const WorkingHoursComponent = ({ queueId }) => {
             Salvar
           </BdsButton>
         </div>
+        <BdsAlert open={isModalOpen}>
+          <BdsAlertHeader icon="warning" variant="warning">
+            {"Você possui alterações não salvas"}
+          </BdsAlertHeader>
+          <BdsAlertBody>
+            {
+              "Tem certeza de que deseja descartar suas alterações? Essa ação não poderá ser desfeita."
+            }
+          </BdsAlertBody>
+          <BdsAlertActions>
+            <BdsButton onClick={() => handleModalBtnClick(true)} variant="secondary">
+              {"Sim, descartar"}
+            </BdsButton>
+            <BdsButton onClick={() => handleModalBtnClick(false)} variant="secondary">
+              {"Não, cancelar"}
+            </BdsButton>
+          </BdsAlertActions>
+        </BdsAlert>
       </div>
     </form>
   ) : null;

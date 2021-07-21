@@ -18,9 +18,11 @@ export const withLoading = async func => {
         stopLoading()
     }
 }
+
 export const withoutLoading = async func => {
     return await func();
 }
+
 export const getOrCreateConfigResource = async (configResource) => {
     let resource = {};
     try {
