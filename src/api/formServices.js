@@ -1,6 +1,6 @@
 import { showToast } from "./commonServices";
 
-export const validateForm = (queueData, inputs) => {
+export const validateForm = (queueData) => {
   let areWeekdayHoursInvalid = false;
   let areWeekendHoursInvalid = false;
   let anyWeekdayIsChecked = Object.keys(queueData.days).find(key => ['mon', 'tue', 'wed', 'thu', 'fri'].includes(key) && queueData.days[key] === true);
