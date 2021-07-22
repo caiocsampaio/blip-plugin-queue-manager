@@ -51,6 +51,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const [isWeekendDanger, setIsWeekendDanger] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [goBack, setGoBack] = useState(false);
+  const [isTouched, setIsTouched] = useState(false)
   //#endregion
 
   const translate = {
@@ -85,7 +86,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
       if (!data) {
         data = defaultQueueData;
       }
-      setQueueData({ ...data });
+      setQueueData(_.cloneDeep(data));
       setInitialState(_.cloneDeep(data));
     }
   }, [resource]);
@@ -96,6 +97,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
       setIsWeekdayDanger(formValidation.areWeekdayHoursInvalid);
       setIsWeekendDanger(formValidation.areWeekendHoursInvalid);
       setErrors(formValidation);
+      console.log('queueData == initialState :>> ', queueData == initialState);
       setIsSaveDisabled(
         formValidation.areWeekdayHoursInvalid ||
           formValidation.areWeekendHoursInvalid ||
@@ -214,12 +216,18 @@ export const WorkingHoursComponent = ({ queueId }) => {
   };
 
   const handleBlockNavigation = () => {
-    const hasFormChanged = queueData != initialState;
+    const hasFormChanged = !_.isEqual(queueData, initialState);
+    console.log('hasFormChanged :>> ', hasFormChanged);
+    console.log('isTouched :>> ', isTouched);
     if (hasFormChanged) {
       setIsModalOpen(true);
       return false;
     }
   };
+
+  useEffect(() => {
+    console.log('isTouched :>> ', isTouched);
+  }, [isTouched])
 
   const handleModalBtnClick = (isConfirmed) => {
     setIsModalOpen(false);
@@ -231,7 +239,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
   //#endregion
 
   return queueData ? (
-    <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
+    <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours} >
       <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row">
         <div className="w-100">
