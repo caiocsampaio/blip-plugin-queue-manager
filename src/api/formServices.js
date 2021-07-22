@@ -19,7 +19,7 @@ export const validateForm = (queueData) => {
   return { areWeekdayHoursInvalid, areWeekendHoursInvalid };
 }
 
-export const showFeedbackInvalidForm = (errors) => {
+export const showFeedbackInvalidWorkingHoursForm = (errors) => {
   if (errors.areWeekdayHoursInvalid || errors.areWeekendHoursInvalid) {
     showToast({
       type: "danger",
@@ -27,4 +27,11 @@ export const showFeedbackInvalidForm = (errors) => {
       message: "Verifique se os horários estão corretos e tente novamente",
     })
   }
+}
+
+export const showFeedbackInvalidAutoMessageForm = () => {
+  showToast({
+    type: "danger",
+    message: "Por favor personalize a sua mensagem com pelo menos o dia e o horário do atendimento. Esta mensagem será exibida para o usuário quando ele tentar entrar em contato.",
+  })
 }

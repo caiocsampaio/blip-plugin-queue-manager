@@ -1,4 +1,6 @@
-import { withLoading } from "api/commonServices";
+import { getQueueResource, setQueueResource } from "api/blipServices";
+import { showToast, withoutLoading } from "api/commonServices";
+import { showFeedbackInvalidAutoMessageForm } from "api/formServices";
 import { getQueue } from "api/iframeServices";
 import {
   BdsButton,
@@ -9,41 +11,137 @@ import {
   BdsTooltip,
   BdsTypo,
 } from "blip-ds/dist/blip-ds-react";
-import { CommonContext } from "contexts/CommonContext";
+import { ChangesModal } from "components/ChangesModal";
 import { ConfigContext } from "contexts/ConfigContext";
 import React, { useContext, useEffect, useState } from "react";
+import { Prompt, useHistory } from "react-router-dom";
+
+const defaultQueueData = {
+  days: {
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+    sun: false,
+  },
+  hours: {
+    weekdays: {
+      from: ["", ""],
+      to: ["", ""],
+    },
+    weekend: {
+      from: ["", ""],
+      to: ["", ""],
+    },
+  },
+  autoMessage: "",
+};
 
 export const AutoMessageComponent = ({ queueId }) => {
-  const context = useContext(CommonContext);
+  const history = useHistory();
+  const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
   const { FORM } = useContext(ConfigContext);
   const [queue, setQueue] = useState({ name: "" });
-  const [autoMessage, setAutoMessage] = useState("");
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+  const [resource, setResource] = useState({});
+  const [queueData, setQueueData] = useState(null);
+  const [initialState, setInitialState] = useState({});
+  const [goBack, setGoBack] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    withLoading(async () => {
+    withoutLoading(async () => {
       setQueue(await getQueue(queueId));
     });
   }, [queueId]);
 
+  useEffect(() => {
+    withoutLoading(async () => {
+      const resourceResponse = await getQueueResource();
+      if (!!resourceResponse) {
+        setResource(resourceResponse);
+      }
+    });
+  }, [queue]);
+
+  useEffect(() => {
+    if (queue) {
+      let data = resource[queue.name];
+      if (!data) {
+        data = defaultQueueData;
+      }
+      setQueueData(data);
+      setInitialState(data);
+    }
+  }, [resource, queue]);
+
+  useEffect(() => {
+    if (goBack) {
+      history.goBack();
+    }
+  }, [goBack, history]);
+
   const handleAutoMessageChange = (value) => {
-    setAutoMessage(value);
-    const isFormValid = validateForm();
+    let newQueueData = { ...queueData };
+    newQueueData.autoMessage = value;
+    setQueueData(newQueueData);
+    const isFormValid = validateForm(value);
     setIsSaveDisabled(!isFormValid);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("auto message submit");
+    if (!validateForm(queueData.autoMessage)) {
+      showFeedbackInvalidAutoMessageForm();
+      return;
+    }
+    let newResource = { ...resource };
+    newResource[queue.name] = queueData;
+    const response = await setQueueResource(newResource);
+    const success = response !== null;
+    showToast({
+      title: success ? null : "Algo deu errado...",
+      type: success ? "success" : "danger",
+      message: success
+        ? "Fila salva com sucesso!"
+        : "Houve um erro ao salvar a fila, tente novamente.",
+    });
+    if (success) {
+      setShouldBlockNavigation(false);
+      history.push("/");
+    }
   };
 
-  const validateForm = () => {
-    const isTextAreaValid = autoMessage.length >= FORM.autoMessageMinLength - 1;
+  const validateForm = (textAreaValue) => {
+    const isTextAreaValid = textAreaValue.length >= FORM.autoMessageMinLength;
     return isTextAreaValid;
   };
 
-  return (
+  const handleCancelClick = () => {
+    history.goBack();
+  };
+
+  const handleBlockNavigation = () => {
+    const hasFormChanged = queueData !== initialState;
+    if (hasFormChanged) {
+      setIsModalOpen(true);
+      return false;
+    }
+  };
+
+  const handleModalBtnClick = (isConfirmed) => {
+    setIsModalOpen(false);
+    if (isConfirmed) {
+      setShouldBlockNavigation(false);
+      setGoBack(true);
+    }
+  };
+
+  return queueData ? (
     <form onSubmit={(e) => handleFormSubmit(e)}>
+      <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row w-100 pb-4">
         <BdsInputEditable size="standard" inputName="queue-name" expand={true} value={queue.name} />
       </div>
@@ -69,7 +167,7 @@ export const AutoMessageComponent = ({ queueId }) => {
             <BdsInput
               className="mt-4"
               inputName="auto-message"
-              placeholder="Hoje o nosso atendimento não está disponível. Voltaremos aos atendimentos no dia 00 às 0h."
+              placeholder="ex: Hoje o nosso atendimento não está disponível. Voltaremos aos atendimentos no dia 00 às 0h."
               isTextarea={true}
               counterLength={true}
               maxlength={255}
@@ -82,33 +180,23 @@ export const AutoMessageComponent = ({ queueId }) => {
               requiredErrorMessage="Campo obrigatório"
               // @ts-ignore
               onBdsChange={(e) => handleAutoMessageChange(e.target.value)}
+              value={queueData.autoMessage}
             />
           </div>
         </BdsPaper>
       </div>
       <div className="row">
         <div className="d-flex justify-content-end">
-          <BdsButton variant="secondary">Cancelar</BdsButton>
+          <BdsButton variant="secondary" onClick={handleCancelClick}>
+            Cancelar
+          </BdsButton>
           &nbsp;
           <BdsButton variant="primary" type="submit" disabled={isSaveDisabled}>
             Salvar
           </BdsButton>
         </div>
       </div>
-      {/* <div className="row">
-        <div className="d-flex justify-content-center">
-          <BdsTypo variant="fs-14" bold="bold" className="hydrated">
-            Explique que o seu atendimento não está disponível e quando voltará ao normal. Essa mensagem aparecerá para o cliente
-          </BdsTypo>
-        </div>
-      </div>
-      <div className="d-flex justify-content-center">
-        <div className="row mt-2">
-          <BdsTypo variant="fs-14" bold="bold" className="hydrated">
-            Crie sua mensagem para o usuário explicando porque seu atendimento não está disponível e quando irá voltar.
-          </BdsTypo>
-        </div>
-      </div> */}
+      <ChangesModal open={isModalOpen} handleClick={handleModalBtnClick} />
     </form>
-  );
+  ) : null;
 };

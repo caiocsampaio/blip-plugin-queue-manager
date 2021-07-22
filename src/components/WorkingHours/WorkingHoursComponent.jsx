@@ -1,19 +1,11 @@
 //#region IMPORTS
 import { getQueueResource, setQueueResource } from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
-import { showFeedbackInvalidForm, validateForm } from "api/formServices";
+import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
 import { getQueue } from "api/iframeServices";
-import {
-  BdsAlert,
-  BdsAlertActions,
-  BdsAlertBody,
-  BdsAlertHeader,
-  BdsButton,
-  BdsInput,
-  BdsPaper,
-  BdsSwitch,
-  BdsTypo,
-} from "blip-ds/dist/blip-ds-react";
+import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
+import { ChangesModal } from "components/ChangesModal";
+import _ from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import { Prompt, useHistory } from "react-router-dom";
 import "./workingHours.css";
@@ -49,10 +41,10 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
   const history = useHistory();
   const formHours = useRef();
-  const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const [queue, setQueue] = useState(null);
   const [resource, setResource] = useState({});
-  const [initialState, setInitialState] = useState({});
+  const [initialState, setInitialState] = useState(null);
   const [queueData, setQueueData] = useState(null);
   const [errors, setErrors] = useState({});
   const [isWeekdayDanger, setIsWeekdayDanger] = useState(false);
@@ -93,8 +85,8 @@ export const WorkingHoursComponent = ({ queueId }) => {
       if (!data) {
         data = defaultQueueData;
       }
-      setQueueData(data);
-      setInitialState(data);
+      setQueueData({ ...data });
+      setInitialState(_.cloneDeep(data));
     }
   }, [resource]);
 
@@ -104,6 +96,11 @@ export const WorkingHoursComponent = ({ queueId }) => {
       setIsWeekdayDanger(formValidation.areWeekdayHoursInvalid);
       setIsWeekendDanger(formValidation.areWeekendHoursInvalid);
       setErrors(formValidation);
+      setIsSaveDisabled(
+        formValidation.areWeekdayHoursInvalid ||
+          formValidation.areWeekendHoursInvalid ||
+          _.isEqual(queueData, initialState)
+      );
     }
   }, [queueData]);
 
@@ -117,7 +114,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (Object.values(errors).find((error) => !!error)) {
-      showFeedbackInvalidForm(errors);
+      showFeedbackInvalidWorkingHoursForm(errors);
       return;
     }
     let newResource = { ...resource };
@@ -125,7 +122,6 @@ export const WorkingHoursComponent = ({ queueId }) => {
     const response = await setQueueResource(newResource);
     const success = response !== null;
     showToast({
-      position: "bottom-right",
       title: success ? null : "Algo deu errado...",
       type: success ? "success" : "danger",
       message: success
@@ -138,7 +134,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
     }
   };
 
-  //#region HANDLE INPUTS CHANGES 
+  //#region HANDLE INPUTS CHANGES
 
   const handleSwitchChange = (e) => {
     const isActive = e.target.checked;
@@ -226,7 +222,6 @@ export const WorkingHoursComponent = ({ queueId }) => {
   };
 
   const handleModalBtnClick = (isConfirmed) => {
-    console.log("isConfirmed :>> ", isConfirmed);
     setIsModalOpen(false);
     if (isConfirmed) {
       setShouldBlockNavigation(false);
@@ -446,24 +441,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
             Salvar
           </BdsButton>
         </div>
-        <BdsAlert open={isModalOpen}>
-          <BdsAlertHeader icon="warning" variant="warning">
-            {"Você possui alterações não salvas"}
-          </BdsAlertHeader>
-          <BdsAlertBody>
-            {
-              "Tem certeza de que deseja descartar suas alterações? Essa ação não poderá ser desfeita."
-            }
-          </BdsAlertBody>
-          <BdsAlertActions>
-            <BdsButton onClick={() => handleModalBtnClick(true)} variant="secondary">
-              {"Sim, descartar"}
-            </BdsButton>
-            <BdsButton onClick={() => handleModalBtnClick(false)} variant="secondary">
-              {"Não, cancelar"}
-            </BdsButton>
-          </BdsAlertActions>
-        </BdsAlert>
+        <ChangesModal open={isModalOpen} handleClick={handleModalBtnClick} />
       </div>
     </form>
   ) : null;
