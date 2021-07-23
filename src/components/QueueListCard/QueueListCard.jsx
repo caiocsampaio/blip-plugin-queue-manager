@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export const QueueListCard = ({ queue, handleSwitchQueue }) => {
   return (
-    <BdsPaper key={`${queue.name}`} elevation="static" className="m-3 p-4">
+    <BdsPaper elevation="static" className="m-3 p-4">
       <div className="d-flex flex-row align-items-center">
         <div className="col-lg-10 col-sm-6">
           <BdsTypo variant="fs-12" bold="regular" className="hydrated">

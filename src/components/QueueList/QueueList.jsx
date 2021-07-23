@@ -3,6 +3,6 @@ import React from "react";
 
 export const QueueList = ({ queues, handleSwitchQueue }) => {
   return queues.map((queue) => (
-    <QueueListCard queue={queue} handleSwitchQueue={handleSwitchQueue} />
+    <QueueListCard key={queue.id} queue={queue} handleSwitchQueue={handleSwitchQueue} />
   ));
 };
