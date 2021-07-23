@@ -5,6 +5,7 @@ import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServi
 import iframeService from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
+import { QueueTitle } from "components/QueueTitle/QueueTitle";
 import _ from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import { Prompt, useHistory } from "react-router-dom";
@@ -231,11 +232,11 @@ export const WorkingHoursComponent = ({ queueId }) => {
   //#endregion
 
   return queueData ? (
-    <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours} >
+    <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
       <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row">
         <div className="w-100">
-          <BdsTypo variant="fs-24">{queue.name}</BdsTypo>
+          <QueueTitle title={queue.name} />
         </div>
         <div className="row">
           <BdsPaper elevation="static" className="m-3 p-4 auto-msg-background">
@@ -441,8 +442,8 @@ export const WorkingHoursComponent = ({ queueId }) => {
             Salvar
           </BdsButton>
         </div>
-        <ChangesModal open={isModalOpen} handleClick={handleModalBtnClick} />
       </div>
+      <ChangesModal open={isModalOpen} handleClick={handleModalBtnClick} />
     </form>
   ) : null;
 };
