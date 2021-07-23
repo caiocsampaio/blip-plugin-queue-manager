@@ -1,11 +1,11 @@
-import { Home } from 'pages/Home';
 import { PageHeader } from 'components/PageHeader';
 import { PageTemplate } from 'components/PageTemplate';
 import { ConfigProvider } from 'contexts/ConfigContext';
+import { EditAutoMessagePage } from 'pages/EditAutoMessage/EditAutoMessage';
+import { EditWorkingHoursPage } from 'pages/EditWorkingHours/EditWorkingHoursPage';
+import { HomePage } from 'pages/Home/HomePage';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { EditWorkingHours } from 'pages/EditWorkingHours';
-import { EditAutoMessage } from 'pages/EditAutoMessage';
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
         <PageTemplate>
           <BrowserRouter>
             <Switch>
-              <Route path="/" exact={true} component={Home} />
-              <Route path="/editWorkingHours/:id" exact={true} component={EditWorkingHours} />
-              <Route path="/editAutoMessage/:id" exact={true} component={EditAutoMessage} />
+              <Route path="/" exact={true} component={HomePage} />
+              <Route path="/editWorkingHours/:id" exact={true} component={EditWorkingHoursPage} />
+              <Route path="/editAutoMessage/:id" exact={true} component={EditAutoMessagePage} />
             </Switch>
           </BrowserRouter>
         </PageTemplate>
