@@ -2,7 +2,7 @@
 import { getQueueResource, setQueueResource } from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
-import { getQueue } from "api/iframeServices";
+import iframeService from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
 import _ from "lodash";
@@ -51,7 +51,6 @@ export const WorkingHoursComponent = ({ queueId }) => {
   const [isWeekendDanger, setIsWeekendDanger] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [goBack, setGoBack] = useState(false);
-  const [isTouched, setIsTouched] = useState(false)
   //#endregion
 
   const translate = {
@@ -67,7 +66,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
   //#region USE EFFECT CALLS
   useEffect(() => {
     withoutLoading(async () => {
-      setQueue(await getQueue(queueId));
+      setQueue(await iframeService.getQueue(queueId));
     });
   }, [queueId]);
 
@@ -89,7 +88,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
       setQueueData(_.cloneDeep(data));
       setInitialState(_.cloneDeep(data));
     }
-  }, [resource]);
+  }, [resource, queue]);
 
   useEffect(() => {
     if (!!queueData) {
@@ -97,20 +96,19 @@ export const WorkingHoursComponent = ({ queueId }) => {
       setIsWeekdayDanger(formValidation.areWeekdayHoursInvalid);
       setIsWeekendDanger(formValidation.areWeekendHoursInvalid);
       setErrors(formValidation);
-      console.log('queueData == initialState :>> ', queueData == initialState);
       setIsSaveDisabled(
         formValidation.areWeekdayHoursInvalid ||
           formValidation.areWeekendHoursInvalid ||
           _.isEqual(queueData, initialState)
       );
     }
-  }, [queueData]);
+  }, [queueData, initialState]);
 
   useEffect(() => {
     if (goBack) {
       history.goBack();
     }
-  }, [goBack]);
+  }, [goBack, history]);
   //#endregion
 
   const handleFormSubmit = async (e) => {
@@ -217,17 +215,11 @@ export const WorkingHoursComponent = ({ queueId }) => {
 
   const handleBlockNavigation = () => {
     const hasFormChanged = !_.isEqual(queueData, initialState);
-    console.log('hasFormChanged :>> ', hasFormChanged);
-    console.log('isTouched :>> ', isTouched);
     if (hasFormChanged) {
       setIsModalOpen(true);
       return false;
     }
   };
-
-  useEffect(() => {
-    console.log('isTouched :>> ', isTouched);
-  }, [isTouched])
 
   const handleModalBtnClick = (isConfirmed) => {
     setIsModalOpen(false);

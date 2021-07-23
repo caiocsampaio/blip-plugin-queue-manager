@@ -7,7 +7,7 @@ const TO_POSTMASTER_MSGING = _config.iframe.msging;
 const TO_POSTMASTER_DESK = _config.iframe.desk;
 const QUEUE_JSON_TYPE = _config.iframe.queueType;
 
-export const getAccount = async () => {
+const getAccount = async () => {
   const { response: account } = await IframeMessageProxy.sendMessage({
     action: "getAccount",
   });
@@ -15,7 +15,7 @@ export const getAccount = async () => {
   return account;
 };
 
-export const getResources = async () => {
+const getResources = async () => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -30,7 +30,7 @@ export const getResources = async () => {
   return response;
 };
 
-export const getResource = async (resource) => {
+const getResource = async (resource) => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -44,7 +44,7 @@ export const getResource = async (resource) => {
   return response;
 };
 
-export const setResource = async (resourceName, resourceType, resourceContent) => {
+const setResource = async (resourceName, resourceType, resourceContent) => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -60,7 +60,7 @@ export const setResource = async (resourceName, resourceType, resourceContent) =
   return response;
 };
 
-export const getQueues = async () => {
+const getQueues = async () => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -79,7 +79,7 @@ export const getQueues = async () => {
   return response.items;
 }
 
-export const getQueue = async (id) => {
+const getQueue = async (id) => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -98,7 +98,7 @@ export const getQueue = async (id) => {
   return response;
 }
 
-export const setQueue = async (queue) => {
+const setQueue = async (queue) => {
   const { response } = await IframeMessageProxy.sendMessage({
     action: ACTION_SEND_COMMAND,
     content: {
@@ -113,3 +113,6 @@ export const setQueue = async (queue) => {
   });
   return response;
 }
+
+const iframeServices = { getAccount, getResources, getResource, setResource, getQueues, getQueue, setQueue };
+export default iframeServices;

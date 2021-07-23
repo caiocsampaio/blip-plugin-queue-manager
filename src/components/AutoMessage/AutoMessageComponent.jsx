@@ -1,15 +1,13 @@
 import { getQueueResource, setQueueResource } from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidAutoMessageForm } from "api/formServices";
-import { getQueue } from "api/iframeServices";
+import iframeService from "api/iframeServices";
 import {
   BdsButton,
   BdsIcon,
-  BdsInput,
-  BdsInputEditable,
-  BdsPaper,
+  BdsInput, BdsPaper,
   BdsTooltip,
-  BdsTypo,
+  BdsTypo
 } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
 import { ConfigContext } from "contexts/ConfigContext";
@@ -44,6 +42,7 @@ export const AutoMessageComponent = ({ queueId }) => {
   const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
   const { FORM } = useContext(ConfigContext);
   const [queue, setQueue] = useState({ name: "" });
+  const [queueName, setQueueName] = useState("");
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const [resource, setResource] = useState({});
   const [queueData, setQueueData] = useState(null);
@@ -53,12 +52,13 @@ export const AutoMessageComponent = ({ queueId }) => {
 
   useEffect(() => {
     withoutLoading(async () => {
-      setQueue(await getQueue(queueId));
+      setQueue(await iframeService.getQueue(queueId));
     });
   }, [queueId]);
 
   useEffect(() => {
     withoutLoading(async () => {
+      setQueueName(queue.name);
       const resourceResponse = await getQueueResource();
       if (!!resourceResponse) {
         setResource(resourceResponse);
@@ -67,21 +67,25 @@ export const AutoMessageComponent = ({ queueId }) => {
   }, [queue]);
 
   useEffect(() => {
-    if (queue) {
-      let data = resource[queue.name];
+    if (queueName) {
+      let data = resource[queueName];
       if (!data) {
         data = defaultQueueData;
       }
       setQueueData(data);
       setInitialState(data);
     }
-  }, [resource, queue]);
+  }, [resource, queueName]);
 
   useEffect(() => {
     if (goBack) {
-      history.goBack();
+      history.push("/");
     }
   }, [goBack, history]);
+
+  useEffect(() => {
+    console.log("queueName :>> ", queueName);
+  }, [queueName]);
 
   const handleAutoMessageChange = (value) => {
     let newQueueData = { ...queueData };
@@ -143,11 +147,11 @@ export const AutoMessageComponent = ({ queueId }) => {
     <form onSubmit={(e) => handleFormSubmit(e)}>
       <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row w-100 pb-4">
-        <BdsInputEditable size="standard" inputName="queue-name" expand={true} value={queue.name} />
+        <BdsTypo variant="fs-24">{queueName}</BdsTypo>
       </div>
       <div className="flex-row d-flex">
         <BdsTypo variant="fs-20" bold="bold" className="hydrated">
-          Mensagem automática: Atendimento indisponível
+          {"Mensagem automática: Atendimento indisponível"}
         </BdsTypo>
         &nbsp;
         <BdsTooltip
