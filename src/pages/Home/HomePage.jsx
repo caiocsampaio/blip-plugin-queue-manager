@@ -1,6 +1,6 @@
 import { changeQueueStatus } from "api/blipServices";
 import { withLoading } from "api/commonServices";
-import { sortQueues } from "api/helpersServices";
+import helperServices from "api/helpersServices";
 import iframeService from "api/iframeServices";
 import { BdsButton, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { QueueList } from "components/QueueList/QueueList";
@@ -14,7 +14,7 @@ export const HomePage = () => {
     withLoading(async () => {
       const queuesFromDesk = await iframeService.getQueues();
       if (queuesFromDesk.length > 0) {
-        const sorted = sortQueues(queuesFromDesk);
+        const sorted = helperServices.sortQueues(queuesFromDesk);
         setQueues(sorted);
       }
     });
@@ -39,7 +39,7 @@ export const HomePage = () => {
         <QueueList queues={queues} handleSwitchQueue={handleSwitchQueue} />
       ) : (
         <BdsTypo variant="fs-14" bold="regular" className="hydrated">
-          Você ainda não possui nenhuma fila de atendimento cadastrada.
+          {"Você ainda não possui nenhuma fila de atendimento cadastrada."}
         </BdsTypo>
       )}
     </div>

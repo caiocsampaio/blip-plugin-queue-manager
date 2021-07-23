@@ -2,6 +2,7 @@
 import { getQueueResource, setQueueResource } from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
+import helperServices from "api/helpersServices";
 import iframeService from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
@@ -146,60 +147,8 @@ export const WorkingHoursComponent = ({ queueId }) => {
     setQueueData(newData);
   };
 
-  const handleWeekdaysHourFrom = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekdays.from[0] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekdaysMinFrom = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekdays.from[1] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekendHourFrom = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekend.from[0] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekendMinFrom = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekend.from[1] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekdaysHourTo = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekdays.to[0] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekdaysMinTo = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekdays.to[1] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekendHourTo = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekend.to[0] = value;
-    setQueueData(newQueueData);
-  };
-
-  const handleWeekendMinTo = (e) => {
-    const value = e.target.value;
-    let newQueueData = { ...queueData };
-    newQueueData.hours.weekend.to[1] = value;
-    setQueueData(newQueueData);
+  const handleHoursChanges = (handleInputFunction, e) => {
+    handleInputFunction(e, queueData, setQueueData);
   };
 
   const handleInputBlur = (e) => {
@@ -306,7 +255,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekdays.from[0]}
-                      onBdsChange={handleWeekdaysHourFrom}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysHourFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -323,7 +272,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekdays.from[1]}
-                      onBdsChange={handleWeekdaysMinFrom}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysMinFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -337,7 +286,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekend.from[0]}
-                      onBdsChange={handleWeekendHourFrom}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendHourFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -354,7 +303,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekend.from[1]}
-                      onBdsChange={handleWeekendMinFrom}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendMinFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -375,7 +324,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekdays.to[0]}
-                      onBdsChange={handleWeekdaysHourTo}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysHourTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -392,7 +341,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekdays.to[1]}
-                      onBdsChange={handleWeekdaysMinTo}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysMinTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -406,7 +355,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekend.to[0]}
-                      onBdsChange={handleWeekendHourTo}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendHourTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -423,7 +372,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekend.to[1]}
-                      onBdsChange={handleWeekendMinTo}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendMinTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
