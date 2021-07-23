@@ -2,11 +2,10 @@ import { changeQueueStatus } from "api/blipServices";
 import { withLoading } from "api/commonServices";
 import { sortQueues } from "api/helpersServices";
 import iframeService from "api/iframeServices";
-import {
-  BdsTypo
-} from "blip-ds/dist/blip-ds-react";
+import { BdsButton, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { QueueList } from "components/QueueList/QueueList";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const [queues, setQueues] = useState([]);
@@ -28,9 +27,14 @@ export const HomePage = () => {
 
   return (
     <div>
-      <BdsTypo variant="fs-20" bold="bold" className="hydrated">
-        Filas de atendimento
-      </BdsTypo>
+      <div className="d-flex flex-row justify-content-between">
+        <BdsTypo variant="fs-20" bold="bold" className="hydrated">
+          {"Filas de atendimento"}
+        </BdsTypo>
+        <Link to={`/createQueue`}>
+          <BdsButton icon="add">{"Criar nova fila"}</BdsButton>
+        </Link>
+      </div>
       {queues.length > 0 ? (
         <QueueList queues={queues} handleSwitchQueue={handleSwitchQueue} />
       ) : (
@@ -39,5 +43,5 @@ export const HomePage = () => {
         </BdsTypo>
       )}
     </div>
-  )
+  );
 };

@@ -67,7 +67,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
   //#region USE EFFECT CALLS
   useEffect(() => {
     withoutLoading(async () => {
-      setQueue(await iframeService.getQueue(queueId));
+      if (queueId) {
+        setQueue(await iframeService.getQueue(queueId));
+      }
     });
   }, [queueId]);
 
