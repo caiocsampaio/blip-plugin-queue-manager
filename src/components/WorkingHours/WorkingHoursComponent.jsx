@@ -13,41 +13,20 @@ import { Prompt, useHistory } from "react-router-dom";
 import "./workingHours.css";
 //#endregion
 
-//#region DEFAULT DATA
-const defaultQueueData = {
-  days: {
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: false,
-    fri: false,
-    sat: false,
-    sun: false,
-  },
-  hours: {
-    weekdays: {
-      from: ["", ""],
-      to: ["", ""],
-    },
-    weekend: {
-      from: ["", ""],
-      to: ["", ""],
-    },
-  },
-  autoMessage: "",
-};
-//#endregion
-
-export const WorkingHoursComponent = ({ queueId }) => {
+export const WorkingHoursComponent = ({
+  queueId,
+  queue,
+  resource,
+  queueData,
+  initialState,
+  setQueueData,
+  setQueue,
+}) => {
   //#region USE STATE CALLS
   const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
   const history = useHistory();
   const formHours = useRef();
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
-  const [queue, setQueue] = useState(null);
-  const [resource, setResource] = useState({});
-  const [initialState, setInitialState] = useState(null);
-  const [queueData, setQueueData] = useState(null);
   const [errors, setErrors] = useState({});
   const [isWeekdayDanger, setIsWeekdayDanger] = useState(false);
   const [isWeekendDanger, setIsWeekendDanger] = useState(false);
@@ -66,34 +45,6 @@ export const WorkingHoursComponent = ({ queueId }) => {
   };
 
   //#region USE EFFECT CALLS
-  useEffect(() => {
-    withoutLoading(async () => {
-      if (queueId) {
-        setQueue(await iframeService.getQueue(queueId));
-      }
-    });
-  }, [queueId]);
-
-  useEffect(() => {
-    withoutLoading(async () => {
-      const resourceResponse = await getQueueResource();
-      if (!!resourceResponse) {
-        setResource(resourceResponse);
-      }
-    });
-  }, [queue]);
-
-  useEffect(() => {
-    if (queue) {
-      let data = resource[queue.name];
-      if (!data) {
-        data = defaultQueueData;
-      }
-      setQueueData(_.cloneDeep(data));
-      setInitialState(_.cloneDeep(data));
-    }
-  }, [resource, queue]);
-
   useEffect(() => {
     if (!!queueData) {
       const formValidation = validateForm(queueData);
@@ -122,7 +73,7 @@ export const WorkingHoursComponent = ({ queueId }) => {
       return;
     }
     let newResource = { ...resource };
-    newResource[queue.name] = queueData;
+    newResource[queue.id] = queueData;
     const response = await setQueueResource(newResource);
     const success = response !== null;
     showToast({
@@ -255,7 +206,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekdays.from[0]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysHourFrom, e)}
+                      onBdsChange={(e) =>
+                        handleHoursChanges(helperServices.handleWeekdaysHourFrom, e)
+                      }
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -272,7 +225,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekdays.from[1]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysMinFrom, e)}
+                      onBdsChange={(e) =>
+                        handleHoursChanges(helperServices.handleWeekdaysMinFrom, e)
+                      }
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -286,7 +241,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekend.from[0]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendHourFrom, e)}
+                      onBdsChange={(e) =>
+                        handleHoursChanges(helperServices.handleWeekendHourFrom, e)
+                      }
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -303,7 +260,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="59"
                       placeholder="min"
                       value={queueData.hours.weekend.from[1]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendMinFrom, e)}
+                      onBdsChange={(e) =>
+                        handleHoursChanges(helperServices.handleWeekendMinFrom, e)
+                      }
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -324,7 +283,9 @@ export const WorkingHoursComponent = ({ queueId }) => {
                       max="23"
                       placeholder="hora"
                       value={queueData.hours.weekdays.to[0]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysHourTo, e)}
+                      onBdsChange={(e) =>
+                        handleHoursChanges(helperServices.handleWeekdaysHourTo, e)
+                      }
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
