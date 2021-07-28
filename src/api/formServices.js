@@ -5,15 +5,14 @@ export const validateForm = (queueData) => {
   let areWeekendHoursInvalid = false;
   let anyWeekdayIsChecked = Object.keys(queueData.days).find(key => ['mon', 'tue', 'wed', 'thu', 'fri'].includes(key) && queueData.days[key] === true);
   let anyWeekendIsChecked = Object.keys(queueData.days).find(key => ['sat', 'sun'].includes(key) && queueData.days[key] === true);
-
   if (anyWeekdayIsChecked) {
-    areWeekdayHoursInvalid = queueData.hours.weekdays.from.includes('')
-      || queueData.hours.weekdays.to.includes('');
+    areWeekdayHoursInvalid = queueData.hours.weekdays.from === ''
+      || queueData.hours.weekdays.to === '';
   }
 
   if (anyWeekendIsChecked) {
-    areWeekendHoursInvalid = queueData.hours.weekend.from.includes('')
-      || queueData.hours.weekend.to.includes('');
+    areWeekendHoursInvalid = queueData.hours.weekend.from === ''
+      || queueData.hours.weekend.to === '';
   }
 
   return { areWeekdayHoursInvalid, areWeekendHoursInvalid };

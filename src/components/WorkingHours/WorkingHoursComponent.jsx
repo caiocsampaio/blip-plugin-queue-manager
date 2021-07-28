@@ -58,9 +58,6 @@ export const WorkingHoursComponent = ({
           _.isEqual(queueData, initialState) ||
           title === "Nova Fila"
       );
-      console.log(
-        'title === "Nova Fila"', title === "Nova Fila"
-      );
     }
   }, [queueData, initialState]);
 
@@ -70,7 +67,6 @@ export const WorkingHoursComponent = ({
         let newQueue = { ...queue };
         newQueue.name = title;
         const response = await blipServices.setQueue(newQueue);
-        console.log("response :>> ", response);
         const success = response !== null;
         showToast({
           title: success ? null : "Algo deu errado...",
@@ -80,7 +76,6 @@ export const WorkingHoursComponent = ({
             : "Houve um erro ao salvar a fila, tente novamente.",
         });
       }
-      const queueResponse = iframeService.getQueue()
     });
   }, [title]);
 
@@ -113,10 +108,6 @@ export const WorkingHoursComponent = ({
       history.push("/");
     }
   };
-
-  const handleFormSubmit2 = () => {
-    
-  }
 
   //#region HANDLE INPUTS CHANGES
 
@@ -230,33 +221,10 @@ export const WorkingHoursComponent = ({
                 <div className="d-flex flex-row justify-content-center">
                   <div>
                     <BdsInput
-                      type="number"
-                      min="0"
-                      max="23"
-                      placeholder="hora"
-                      value={queueData.hours.weekdays.from[0]}
-                      onBdsChange={(e) =>
-                        handleHoursChanges(helperServices.handleWeekdaysHourFrom, e)
-                      }
-                      onBdsOnBlur={handleInputBlur}
-                      danger={isWeekdayDanger}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
-                      &nbsp;:&nbsp;
-                    </BdsTypo>
-                  </div>
-                  <div>
-                    <BdsInput
-                      type="number"
-                      min="0"
-                      max="59"
-                      placeholder="min"
-                      value={queueData.hours.weekdays.from[1]}
-                      onBdsChange={(e) =>
-                        handleHoursChanges(helperServices.handleWeekdaysMinFrom, e)
-                      }
+                      // @ts-ignore
+                      type="time"
+                      value={queueData.hours.weekdays.from}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -265,34 +233,10 @@ export const WorkingHoursComponent = ({
                 <div className="d-flex flex-row justify-content-center mt-1">
                   <div>
                     <BdsInput
-                      type="number"
-                      min="0"
-                      max="23"
-                      placeholder="hora"
-                      value={queueData.hours.weekend.from[0]}
-                      onBdsChange={(e) =>
-                        handleHoursChanges(helperServices.handleWeekendHourFrom, e)
-                      }
-                      onBdsOnBlur={handleInputBlur}
-                      danger={isWeekendDanger}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
-                      &nbsp;:&nbsp;
-                    </BdsTypo>
-                  </div>
-                  <div>
-                    <BdsInput
                       // @ts-ignore
                       type="time"
-                      min="0"
-                      max="59"
-                      placeholder="min"
-                      value={queueData.hours.weekend.from[1]}
-                      onBdsChange={(e) =>
-                        handleHoursChanges(helperServices.handleWeekendMinFrom, e)
-                      }
+                      value={queueData.hours.weekend.from}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendFrom, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />
@@ -308,31 +252,10 @@ export const WorkingHoursComponent = ({
                 <div className="d-flex flex-row justify-content-center">
                   <div>
                     <BdsInput
-                      type="number"
-                      min="0"
-                      max="23"
-                      placeholder="hora"
-                      value={queueData.hours.weekdays.to[0]}
-                      onBdsChange={(e) =>
-                        handleHoursChanges(helperServices.handleWeekdaysHourTo, e)
-                      }
-                      onBdsOnBlur={handleInputBlur}
-                      danger={isWeekdayDanger}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
-                      &nbsp;:&nbsp;
-                    </BdsTypo>
-                  </div>
-                  <div>
-                    <BdsInput
-                      type="number"
-                      min="0"
-                      max="59"
-                      placeholder="min"
-                      value={queueData.hours.weekdays.to[1]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysMinTo, e)}
+                      // @ts-ignore
+                      type="time"
+                      value={queueData.hours.weekdays.to}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekdaysTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekdayDanger}
                     />
@@ -341,29 +264,10 @@ export const WorkingHoursComponent = ({
                 <div className="d-flex flex-row justify-content-center mt-1">
                   <div>
                     <BdsInput
-                      type="number"
-                      min="0"
-                      max="23"
-                      placeholder="hora"
-                      value={queueData.hours.weekend.to[0]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendHourTo, e)}
-                      onBdsOnBlur={handleInputBlur}
-                      danger={isWeekendDanger}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <BdsTypo variant="fs-20" bold="regular" className="hydrated">
-                      &nbsp;:&nbsp;
-                    </BdsTypo>
-                  </div>
-                  <div>
-                    <BdsInput
-                      type="number"
-                      min="0"
-                      max="59"
-                      placeholder="min"
-                      value={queueData.hours.weekend.to[1]}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendMinTo, e)}
+                      // @ts-ignore
+                      type="time"
+                      value={queueData.hours.weekend.to}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendTo, e)}
                       onBdsOnBlur={handleInputBlur}
                       danger={isWeekendDanger}
                     />

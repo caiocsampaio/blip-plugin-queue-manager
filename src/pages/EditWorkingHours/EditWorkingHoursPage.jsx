@@ -19,12 +19,12 @@ const defaultQueueData = {
   },
   hours: {
     weekdays: {
-      from: ["", ""],
-      to: ["", ""],
+      from: "",
+      to: "",
     },
     weekend: {
-      from: ["", ""],
-      to: ["", ""],
+      from: "",
+      to: "",
     },
   },
   autoMessage: "",

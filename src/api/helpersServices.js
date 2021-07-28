@@ -6,71 +6,39 @@ const sortQueues = (queues) => {
   });
 }
 
-const handleWeekdaysHourFrom = (e, queueData, setQueueData) => {
+const handleWeekdaysFrom = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekdays.from[0] = value;
+  newQueueData.hours.weekdays.from = value;
   setQueueData(newQueueData);
 };
 
-const handleWeekdaysMinFrom = (e, queueData, setQueueData) => {
+const handleWeekendFrom = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekdays.from[1] = value;
+  newQueueData.hours.weekend.from = value;
   setQueueData(newQueueData);
 };
 
-const handleWeekendHourFrom = (e, queueData, setQueueData) => {
+const handleWeekdaysTo = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.from[0] = value;
+  newQueueData.hours.weekdays.to = value;
   setQueueData(newQueueData);
 };
 
-const handleWeekendMinFrom = (e, queueData, setQueueData) => {
+const handleWeekendTo = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.from[1] = value;
-  setQueueData(newQueueData);
-};
-
-const handleWeekdaysHourTo = (e, queueData, setQueueData) => {
-  const value = e.target.value;
-  let newQueueData = { ...queueData };
-  newQueueData.hours.weekdays.to[0] = value;
-  setQueueData(newQueueData);
-};
-
-const handleWeekdaysMinTo = (e, queueData, setQueueData) => {
-  const value = e.target.value;
-  let newQueueData = { ...queueData };
-  newQueueData.hours.weekdays.to[1] = value;
-  setQueueData(newQueueData);
-};
-
-const handleWeekendHourTo = (e, queueData, setQueueData) => {
-  const value = e.target.value;
-  let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.to[0] = value;
-  setQueueData(newQueueData);
-};
-
-const handleWeekendMinTo = (e, queueData, setQueueData) => {
-  const value = e.target.value;
-  let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.to[1] = value;
+  newQueueData.hours.weekend.to = value;
   setQueueData(newQueueData);
 };
 
 const helperServices = {
   sortQueues,
-  handleWeekdaysHourFrom,
-  handleWeekdaysMinFrom,
-  handleWeekendHourFrom,
-  handleWeekendMinFrom,
-  handleWeekdaysHourTo,
-  handleWeekdaysMinTo,
-  handleWeekendHourTo,
-  handleWeekendMinTo
+  handleWeekdaysFrom,
+  handleWeekendFrom,
+  handleWeekdaysTo,
+  handleWeekendTo,
 };
 export default helperServices;
