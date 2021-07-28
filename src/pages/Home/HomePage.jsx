@@ -31,9 +31,9 @@ export const HomePage = () => {
         <BdsTypo variant="fs-20" bold="bold" className="hydrated">
           {"Filas de atendimento"}
         </BdsTypo>
-        <Link to={`/createQueue`}>
+        {/* <Link to={`/createQueue`}>
           <BdsButton icon="add">{"Criar nova fila"}</BdsButton>
-        </Link>
+        </Link> */}
       </div>
       {queues.length > 0 ? (
         <QueueList queues={queues} handleSwitchQueue={handleSwitchQueue} />
