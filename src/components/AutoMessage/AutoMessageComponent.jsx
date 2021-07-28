@@ -1,4 +1,4 @@
-import { getQueueResource, setQueueResource } from "api/blipServices";
+import blipServices from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidAutoMessageForm } from "api/formServices";
 import iframeService from "api/iframeServices";
@@ -8,7 +8,7 @@ import {
 import { AutoMessageTextInput } from "components/AutoMessageTextInput/AutoMessageTextInput";
 import { ChangesModal } from "components/ChangesModal";
 import { FormBtnGroup } from "components/FormBtnGroup/FormBtnGroup";
-import { QueueTitle } from "components/QueueTitle/QueueTitle";
+import QueueTitle from "components/QueueTitle/QueueTitle";
 import { Tooltip } from "components/Tooltip/Tooltip";
 import { ConfigContext } from "contexts/ConfigContext";
 import React, { useContext, useEffect, useState } from "react";
@@ -59,7 +59,7 @@ export const AutoMessageComponent = ({ queueId }) => {
   useEffect(() => {
     withoutLoading(async () => {
       setQueueName(queue.name);
-      const resourceResponse = await getQueueResource();
+      const resourceResponse = await blipServices.getQueueResource();
       if (!!resourceResponse) {
         setResource(resourceResponse);
       }
@@ -99,7 +99,7 @@ export const AutoMessageComponent = ({ queueId }) => {
     }
     let newResource = { ...resource };
     newResource[queue.name] = queueData;
-    const response = await setQueueResource(newResource);
+    const response = await blipServices.setQueueResource(newResource);
     const success = response !== null;
     showToast({
       title: success ? null : "Algo deu errado...",

@@ -1,4 +1,4 @@
-import { changeQueueStatus } from "api/blipServices";
+import blipServices from "api/blipServices";
 import { withLoading } from "api/commonServices";
 import helperServices from "api/helpersServices";
 import iframeService from "api/iframeServices";
@@ -22,7 +22,7 @@ export const HomePage = () => {
 
   const handleSwitchQueue = async (e, queue) => {
     const checked = e.target.checked;
-    await changeQueueStatus(checked, queue);
+    await blipServices.changeQueueStatus(checked, queue);
   };
 
   return (

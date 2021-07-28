@@ -1,12 +1,12 @@
 //#region IMPORTS
-import { getQueueResource, setQueueResource } from "api/blipServices";
+import blipServices from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
 import helperServices from "api/helpersServices";
 import iframeService from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
-import { QueueTitle } from "components/QueueTitle/QueueTitle";
+import QueueTitle from "components/QueueTitle/QueueTitle";
 import _ from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 import { Prompt, useHistory } from "react-router-dom";
@@ -32,6 +32,7 @@ export const WorkingHoursComponent = ({
   const [isWeekendDanger, setIsWeekendDanger] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [goBack, setGoBack] = useState(false);
+  const [title, setTitle] = useState(queue.name);
   //#endregion
 
   const translate = {
@@ -54,10 +55,34 @@ export const WorkingHoursComponent = ({
       setIsSaveDisabled(
         formValidation.areWeekdayHoursInvalid ||
           formValidation.areWeekendHoursInvalid ||
-          _.isEqual(queueData, initialState)
+          _.isEqual(queueData, initialState) ||
+          title === "Nova Fila"
+      );
+      console.log(
+        'title === "Nova Fila"', title === "Nova Fila"
       );
     }
   }, [queueData, initialState]);
+
+  useEffect(() => {
+    withoutLoading(async () => {
+      if (title !== queue.name) {
+        let newQueue = { ...queue };
+        newQueue.name = title;
+        const response = await blipServices.setQueue(newQueue);
+        console.log("response :>> ", response);
+        const success = response !== null;
+        showToast({
+          title: success ? null : "Algo deu errado...",
+          type: success ? "success" : "danger",
+          message: success
+            ? "Fila salva com sucesso!"
+            : "Houve um erro ao salvar a fila, tente novamente.",
+        });
+      }
+      const queueResponse = iframeService.getQueue()
+    });
+  }, [title]);
 
   useEffect(() => {
     if (goBack) {
@@ -74,7 +99,7 @@ export const WorkingHoursComponent = ({
     }
     let newResource = { ...resource };
     newResource[queue.id] = queueData;
-    const response = await setQueueResource(newResource);
+    const response = await blipServices.setQueueResource(newResource);
     const success = response !== null;
     showToast({
       title: success ? null : "Algo deu errado...",
@@ -88,6 +113,10 @@ export const WorkingHoursComponent = ({
       history.push("/");
     }
   };
+
+  const handleFormSubmit2 = () => {
+    
+  }
 
   //#region HANDLE INPUTS CHANGES
 
@@ -133,12 +162,12 @@ export const WorkingHoursComponent = ({
   };
   //#endregion
 
-  return queueData ? (
+  return (
     <form onSubmit={(e) => handleFormSubmit(e)} ref={formHours}>
       <Prompt when={shouldBlockNavigation} message={handleBlockNavigation} />
       <div className="row">
         <div className="w-100">
-          <QueueTitle title={queue.name} />
+          <QueueTitle title={title} setTitle={setTitle} />
         </div>
         <div className="row">
           <BdsPaper elevation="static" className="m-3 p-4 auto-msg-background">
@@ -255,7 +284,8 @@ export const WorkingHoursComponent = ({
                   </div>
                   <div>
                     <BdsInput
-                      type="number"
+                      // @ts-ignore
+                      type="time"
                       min="0"
                       max="59"
                       placeholder="min"
@@ -357,5 +387,5 @@ export const WorkingHoursComponent = ({
       </div>
       <ChangesModal open={isModalOpen} handleClick={handleModalBtnClick} />
     </form>
-  ) : null;
+  );
 };
