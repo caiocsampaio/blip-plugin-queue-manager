@@ -1,4 +1,4 @@
-import { showToast } from "./commonServices";
+import commonServices from "./commonServices";
 
 export const validateForm = (queueData) => {
   let areWeekdayHoursInvalid = false;
@@ -20,7 +20,7 @@ export const validateForm = (queueData) => {
 
 export const showFeedbackInvalidWorkingHoursForm = (errors) => {
   if (errors.areWeekdayHoursInvalid || errors.areWeekendHoursInvalid) {
-    showToast({
+    commonServices.showToast({
       type: "danger",
       title: "Horários inválidos",
       message: "Verifique se os horários estão corretos e tente novamente",
@@ -29,7 +29,7 @@ export const showFeedbackInvalidWorkingHoursForm = (errors) => {
 }
 
 export const showFeedbackInvalidAutoMessageForm = () => {
-  showToast({
+  commonServices.showToast({
     type: "danger",
     message: "Por favor personalize a sua mensagem com pelo menos o dia e o horário do atendimento. Esta mensagem será exibida para o usuário quando ele tentar entrar em contato.",
   })

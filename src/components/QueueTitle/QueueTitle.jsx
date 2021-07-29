@@ -21,6 +21,7 @@ const QueueTitle = ({ title, setTitle }) => {
       expand={true}
       value={title}
       id="queue-name"
+      data-testid="queueTitle"
     />
   );
 };
