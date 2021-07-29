@@ -1,6 +1,6 @@
 //#region IMPORTS
 import blipServices from "api/blipServices";
-import { showToast, withoutLoading } from "api/commonServices";
+import commonServices from "api/commonServices";
 import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
 import helperServices from "api/helpersServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
@@ -61,13 +61,13 @@ export const WorkingHoursComponent = ({
   }, [queueData, initialState]);
 
   useEffect(() => {
-    withoutLoading(async () => {
+    commonServices.withoutLoading(async () => {
       if (title !== queue.name) {
         let newQueue = { ...queue };
         newQueue.name = title;
         const response = await blipServices.setQueue(newQueue);
         const success = response !== null;
-        showToast({
+        commonServices.showToast({
           title: success ? null : "Algo deu errado...",
           type: success ? "success" : "danger",
           message: success
@@ -95,7 +95,7 @@ export const WorkingHoursComponent = ({
     newResource[queue.id] = queueData;
     const response = await blipServices.setQueueResource(newResource);
     const success = response !== null;
-    showToast({
+    commonServices.showToast({
       title: success ? null : "Algo deu errado...",
       type: success ? "success" : "danger",
       message: success

@@ -1,5 +1,5 @@
 import blipServices from "api/blipServices";
-import { withoutLoading } from "api/commonServices";
+import commonServices from "api/commonServices";
 import iframeService from "api/iframeServices";
 import { WorkingHours } from "components/WorkingHours";
 import _ from "lodash";
@@ -40,7 +40,7 @@ export const EditWorkingHoursPage = () => {
   const [queueData, setQueueData] = useState(null);
 
   useEffect(() => {
-    withoutLoading(async () => {
+    commonServices.withoutLoading(async () => {
       if (id) {
         setQueue(await iframeService.getQueue(id));
       }
@@ -48,7 +48,7 @@ export const EditWorkingHoursPage = () => {
   }, [id]);
 
   useEffect(() => {
-    withoutLoading(async () => {
+    commonServices.withoutLoading(async () => {
       const resourceResponse = await blipServices.getQueueResource();
       if (!!resourceResponse) {
         setResource(resourceResponse);

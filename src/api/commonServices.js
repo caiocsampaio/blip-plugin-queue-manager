@@ -1,15 +1,15 @@
 import { IframeMessageProxy } from 'iframe-message-proxy'
 import iframeService from './iframeServices'
 
-export const startLoading = () => IframeMessageProxy.sendMessage({ action: 'startLoading' })
+const startLoading = () => IframeMessageProxy.sendMessage({ action: 'startLoading' })
 
-export const stopLoading = () => IframeMessageProxy.sendMessage({ action: 'stopLoading' })
+const stopLoading = () => IframeMessageProxy.sendMessage({ action: 'stopLoading' })
 
-export const setHeight = (height) => IframeMessageProxy.sendMessage({ action: 'heightChange', content: height })
+const setHeight = (height) => IframeMessageProxy.sendMessage({ action: 'heightChange', content: height })
 
-export const showToast = (toast) => IframeMessageProxy.sendMessage({ action: 'toast', content: toast })
+const showToast = (toast) => IframeMessageProxy.sendMessage({ action: 'toast', content: toast })
 
-export const withLoading = async func => {
+const withLoading = async func => {
     startLoading()
 
     try {
@@ -19,11 +19,11 @@ export const withLoading = async func => {
     }
 }
 
-export const withoutLoading = async func => {
+const withoutLoading = async func => {
     return await func();
 }
 
-export const getOrCreateConfigResource = async (configResource) => {
+const getOrCreateConfigResource = async (configResource) => {
     let resource = {};
     try {
         resource = await iframeService.getResource(configResource);
@@ -33,3 +33,14 @@ export const getOrCreateConfigResource = async (configResource) => {
     }
     return resource;
 }
+
+const commonServices = {
+    startLoading,
+    stopLoading,
+    setHeight,
+    showToast,
+    withLoading,
+    withoutLoading,
+    getOrCreateConfigResource
+}
+export default commonServices;

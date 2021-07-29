@@ -1,4 +1,4 @@
-import { setHeight } from 'api/commonServices';
+import commonServices from 'api/commonServices';
 import { applyPolyfills, defineCustomElements } from 'blip-ds/loader';
 import { IframeMessageProxy } from 'iframe-message-proxy';
 import React from 'react';
@@ -18,7 +18,7 @@ IframeMessageProxy.listen();
 const rootDiv = document.getElementById("root");
 
 const documentObserver = new ResizeObserver(() => {
-  setHeight(rootDiv.scrollHeight + 200);
+  commonServices.setHeight(rootDiv.scrollHeight + 200);
 });
 
 documentObserver.observe(rootDiv);
