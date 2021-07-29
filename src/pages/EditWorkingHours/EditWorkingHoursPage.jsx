@@ -1,10 +1,10 @@
 import blipServices from "api/blipServices";
 import { withoutLoading } from "api/commonServices";
+import iframeService from "api/iframeServices";
 import { WorkingHours } from "components/WorkingHours";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import iframeService from "api/iframeServices";
 
 //#region DEFAULT DATA
 const defaultQueueData = {

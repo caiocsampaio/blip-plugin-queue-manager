@@ -1,11 +1,10 @@
 import {
   BdsAlert,
-  BdsAlertHeader,
-  BdsAlertBody,
   BdsAlertActions,
+  BdsAlertBody,
+  BdsAlertHeader,
   BdsButton,
-  BdsInput,
-  BdsTypo,
+  BdsInput
 } from "blip-ds/dist/blip-ds-react";
 import React, { useRef } from "react";
 import "./createQueueModal.css";
@@ -24,7 +23,7 @@ export const CreateQueueModal = ({ open = false, handleClick = (isSave, value) =
         <BdsButton variant="primary" onClick={() => handleClick(true, inputRef.current.value)}>
           {"Salvar"}
         </BdsButton>
-        <BdsButton  variant="secondary" onClick={() => handleClick(false)}>
+        <BdsButton variant="secondary" onClick={() => handleClick(false)}>
           {"Cancelar"}
         </BdsButton>
       </BdsAlertActions>

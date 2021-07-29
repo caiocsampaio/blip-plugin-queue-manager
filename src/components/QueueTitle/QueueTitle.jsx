@@ -1,15 +1,16 @@
-import { BdsInputEditable, BdsTypo } from "blip-ds/dist/blip-ds-react";
-import React, { useEffect, useRef } from "react";
+import { BdsInputEditable } from "blip-ds/dist/blip-ds-react";
 import PropTypes from "prop-types";
+import React, { useRef } from "react";
 
 const QueueTitle = ({ title, setTitle }) => {
   const inputRef = useRef(null);
 
   const handleInputEditableSave = (e) => {
-    setTimeout(() => { // o input editable tem um bug q me obriga a fazer gambiarras...
-      setTitle(e.target.value)
+    setTimeout(() => {
+      // o input editable tem um bug q me obriga a fazer gambiarras...
+      setTitle(e.target.value);
     }, 100);
-  }
+  };
 
   return (
     <BdsInputEditable

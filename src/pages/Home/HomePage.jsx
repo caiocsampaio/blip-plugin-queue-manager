@@ -6,7 +6,6 @@ import { BdsButton, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { CreateQueueModal } from "components/CreateQueueModal/CreateQueueModal";
 import { QueueList } from "components/QueueList/QueueList";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   const [queues, setQueues] = useState([]);
@@ -19,17 +18,14 @@ export const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    if(!isModalOpen) {
+    if (!isModalOpen) {
       withoutLoading(async () => {
         await setQueuesListData();
       });
     }
-  }, [isModalOpen])
-
-  console.log('queues :>> ', queues);
+  }, [isModalOpen]);
 
   const setQueuesListData = async () => {
-    debugger
     const queuesFromDesk = await iframeServices.getQueues();
     if (queuesFromDesk.length > 0) {
       const sorted = helperServices.sortQueues(queuesFromDesk);
@@ -51,11 +47,11 @@ export const HomePage = () => {
       if (!isSave) {
         setIsModalOpen(false);
       }
-  
+
       const response = await blipServices.setQueue({
         name: value,
-        isActive: true
-      })
+        isActive: true,
+      });
       const success = response !== null;
 
       showToast({
@@ -65,10 +61,9 @@ export const HomePage = () => {
           ? "Fila criada com sucesso!"
           : "Houve um erro ao salvar a fila, tente novamente.",
       });
-      
     } finally {
       setIsModalOpen(false);
-    }   
+    }
   };
 
   return (

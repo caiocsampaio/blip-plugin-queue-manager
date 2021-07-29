@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import Proptypes from "prop-types";
 import { BdsChip, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ConfigContext } from "contexts/ConfigContext";
+import Proptypes from "prop-types";
+import React, { useContext } from "react";
 
 export const PageHeaderComponent = () => {
   const context = useContext(ConfigContext);

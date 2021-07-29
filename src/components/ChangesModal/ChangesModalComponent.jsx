@@ -1,4 +1,10 @@
-import { BdsAlert, BdsAlertHeader, BdsAlertBody, BdsAlertActions, BdsButton } from "blip-ds/dist/blip-ds-react";
+import {
+  BdsAlert,
+  BdsAlertActions,
+  BdsAlertBody,
+  BdsAlertHeader,
+  BdsButton,
+} from "blip-ds/dist/blip-ds-react";
 import React from "react";
 
 export const ChangesModalComponent = ({ open = false, handleClick = (value) => {} }) => {

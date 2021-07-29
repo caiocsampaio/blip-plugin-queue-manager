@@ -1,9 +1,9 @@
 import {
-  BdsPaper,
-  BdsTypo,
-  BdsTooltip,
   BdsButtonIcon,
+  BdsPaper,
   BdsSwitch,
+  BdsTooltip,
+  BdsTypo,
 } from "blip-ds/dist/blip-ds-react";
 import React from "react";
 import { Link } from "react-router-dom";

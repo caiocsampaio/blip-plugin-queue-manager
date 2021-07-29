@@ -1,11 +1,11 @@
+import { setHeight } from 'api/commonServices';
+import { applyPolyfills, defineCustomElements } from 'blip-ds/loader';
+import { IframeMessageProxy } from 'iframe-message-proxy';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 import "bootstrap/dist/css/bootstrap.css";
 import "./index.scss";
-import App from './App';
-import { applyPolyfills, defineCustomElements } from 'blip-ds/loader';
-import { setHeight } from 'api/commonServices';
-import { IframeMessageProxy } from 'iframe-message-proxy';
 
 console.log(
   `Developed by Caio Sampaio.

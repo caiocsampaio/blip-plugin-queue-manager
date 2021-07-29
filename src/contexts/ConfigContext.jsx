@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import _config from "../appsettings.json";
 
 // @ts-ignore
@@ -14,12 +14,10 @@ const ConfigProvider = ({ children }) => {
     TITLE,
     VERSION,
     CONFIG_RESOURCE,
-    FORM
+    FORM,
   };
-  
-  return (
-    <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
-  );
-}
+
+  return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;
+};
 
 export { ConfigProvider, ConfigContext };

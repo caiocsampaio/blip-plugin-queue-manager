@@ -9,8 +9,8 @@ const CommonContext = React.createContext();
 const CommonProvider = ({ children }) => {
   const { CONFIG_RESOURCE } = useContext(ConfigContext);
   const [account, setAccount] = useState({});
-  const [queueConfig, setQueueConfig] = useState({})
-  
+  const [queueConfig, setQueueConfig] = useState({});
+
   useEffect(() => {
     withLoading(async () => {
       setAccount(await iframeService.getAccount());
@@ -21,6 +21,6 @@ const CommonProvider = ({ children }) => {
   const value = { account, queueConfig };
 
   return <CommonContext.Provider value={value}>{children}</CommonContext.Provider>;
-}
+};
 
 export { CommonProvider, CommonContext };

@@ -3,7 +3,6 @@ import blipServices from "api/blipServices";
 import { showToast, withoutLoading } from "api/commonServices";
 import { showFeedbackInvalidWorkingHoursForm, validateForm } from "api/formServices";
 import helperServices from "api/helpersServices";
-import iframeService from "api/iframeServices";
 import { BdsButton, BdsInput, BdsPaper, BdsSwitch, BdsTypo } from "blip-ds/dist/blip-ds-react";
 import { ChangesModal } from "components/ChangesModal";
 import QueueTitle from "components/QueueTitle/QueueTitle";
