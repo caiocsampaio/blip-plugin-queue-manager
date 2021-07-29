@@ -1,5 +1,5 @@
 import blipServices from "api/blipServices";
-import { showToast, withLoading, withoutLoading } from "api/commonServices";
+import commonServices from "api/commonServices";
 import helperServices from "api/helpersServices";
 import iframeServices from "api/iframeServices";
 import { BdsButton, BdsTypo } from "blip-ds/dist/blip-ds-react";
@@ -12,14 +12,14 @@ export const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    withLoading(async () => {
+    commonServices.withLoading(async () => {
       await setQueuesListData();
     });
   }, []);
 
   useEffect(() => {
     if (!isModalOpen) {
-      withoutLoading(async () => {
+      commonServices.withoutLoading(async () => {
         await setQueuesListData();
       });
     }
@@ -54,7 +54,7 @@ export const HomePage = () => {
       });
       const success = response !== null;
 
-      showToast({
+      commonServices.showToast({
         title: success ? null : "Algo deu errado...",
         type: success ? "success" : "danger",
         message: success

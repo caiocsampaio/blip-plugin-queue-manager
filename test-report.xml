@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\Users\caiosp\Documents\BMG\blip-plugin-queue-manager\src\api\__tests__\blipServices.test.js">
+    <testCase name="Blip Services should set queue" duration="4"/>
+    <testCase name="Blip Services should change queue status" duration="1"/>
+    <testCase name="Blip Services should get queue resource" duration="4"/>
+    <testCase name="Blip Services should set resource successfully" duration="1"/>
+    <testCase name="Blip Services should set resource with error" duration="2"/>
+  </file>
+  <file path="C:\Users\caiosp\Documents\BMG\blip-plugin-queue-manager\src\api\__tests__\formServices.test.js">
+    <testCase name="Form Services should be both false" duration="12"/>
+    <testCase name="Form Services areWeekdayHoursInvalid should be true" duration="1"/>
+    <testCase name="Form Services areWeekendHoursInvalid should also be true" duration="1"/>
+  </file>
+  <file path="C:\Users\caiosp\Documents\BMG\blip-plugin-queue-manager\src\components\PageHeader\PageHeaderComponent.test.js">
+    <testCase name="PageHeader Should render" duration="136"/>
+  </file>
+  <file path="C:\Users\caiosp\Documents\BMG\blip-plugin-queue-manager\src\pages\Home\HomePage.test.js">
+    <testCase name="HomePage should render" duration="268"/>
+  </file>
+  <file path="C:\Users\caiosp\Documents\BMG\blip-plugin-queue-manager\src\components\AutoMessage\AutoMessageComponent.test.js">
+    <testCase name="AutoMessageComponent should render" duration="144"/>
+  </file>
+</testExecutions>

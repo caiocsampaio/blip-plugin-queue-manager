@@ -1,5 +1,5 @@
 import blipServices from "api/blipServices";
-import { showToast, withoutLoading } from "api/commonServices";
+import commonServices from "api/commonServices";
 import { showFeedbackInvalidAutoMessageForm } from "api/formServices";
 import iframeService from "api/iframeServices";
 import {
@@ -51,13 +51,13 @@ export const AutoMessageComponent = ({ queueId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    withoutLoading(async () => {
+    commonServices.withoutLoading(async () => {
       setQueue(await iframeService.getQueue(queueId));
     });
   }, [queueId]);
 
   useEffect(() => {
-    withoutLoading(async () => {
+    commonServices.withoutLoading(async () => {
       setQueueName(queue.name);
       const resourceResponse = await blipServices.getQueueResource();
       if (!!resourceResponse) {
@@ -101,7 +101,7 @@ export const AutoMessageComponent = ({ queueId }) => {
     newResource[queue.name] = queueData;
     const response = await blipServices.setQueueResource(newResource);
     const success = response !== null;
-    showToast({
+    commonServices.showToast({
       title: success ? null : "Algo deu errado...",
       type: success ? "success" : "danger",
       message: success

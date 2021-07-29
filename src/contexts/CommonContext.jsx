@@ -1,4 +1,4 @@
-import { getOrCreateConfigResource, withLoading } from "api/commonServices";
+import commonServices from "api/commonServices";
 import iframeService from "api/iframeServices";
 import React, { useContext, useEffect, useState } from "react";
 import { ConfigContext } from "./ConfigContext";
@@ -12,9 +12,9 @@ const CommonProvider = ({ children }) => {
   const [queueConfig, setQueueConfig] = useState({});
 
   useEffect(() => {
-    withLoading(async () => {
+    commonServices.withLoading(async () => {
       setAccount(await iframeService.getAccount());
-      setQueueConfig(await getOrCreateConfigResource(CONFIG_RESOURCE));
+      setQueueConfig(await commonServices.getOrCreateConfigResource(CONFIG_RESOURCE));
     });
   }, [CONFIG_RESOURCE]);
 
