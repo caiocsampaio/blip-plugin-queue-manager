@@ -17,10 +17,4 @@ module.exports = {
   transformIgnorePatterns: ["node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ["./src/config/setupTests.js"],
-  coverageThreshold: {
-    global: {
-      lines: 40,
-      branches: 40
-    }
-  }
 };
