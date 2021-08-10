@@ -2,24 +2,31 @@ import commonServices from "./commonServices";
 
 export const validateForm = (queueData) => {
   let areWeekdayHoursInvalid = false;
-  let areWeekendHoursInvalid = false;
+  let areSaturdayHoursInvalid = false;
+  let areSundayHoursInvalid = false;
   let anyWeekdayIsChecked = Object.keys(queueData.days).find(key => ['mon', 'tue', 'wed', 'thu', 'fri'].includes(key) && queueData.days[key] === true);
-  let anyWeekendIsChecked = Object.keys(queueData.days).find(key => ['sat', 'sun'].includes(key) && queueData.days[key] === true);
+  let anySaturdayIsChecked = Object.keys(queueData.days).find(key => ['sat'].includes(key) && queueData.days[key] === true);
+  let anySundayIsChecked = Object.keys(queueData.days).find(key => ['sun'].includes(key) && queueData.days[key] === true);
   if (anyWeekdayIsChecked) {
     areWeekdayHoursInvalid = queueData.hours.weekdays.from === ''
       || queueData.hours.weekdays.to === '';
   }
 
-  if (anyWeekendIsChecked) {
-    areWeekendHoursInvalid = queueData.hours.weekend.from === ''
-      || queueData.hours.weekend.to === '';
+  if (anySaturdayIsChecked) {
+    areSaturdayHoursInvalid = queueData.hours.saturday.from === ''
+      || queueData.hours.saturday.to === '';
   }
 
-  return { areWeekdayHoursInvalid, areWeekendHoursInvalid };
+  if (anySundayIsChecked) {
+    areSundayHoursInvalid = queueData.hours.sunday.from === ''
+      || queueData.hours.sunday.to === '';
+  }
+
+  return { areWeekdayHoursInvalid, areSaturdayHoursInvalid, areSundayHoursInvalid };
 }
 
 export const showFeedbackInvalidWorkingHoursForm = (errors) => {
-  if (errors.areWeekdayHoursInvalid || errors.areWeekendHoursInvalid) {
+  if (errors.areWeekdayHoursInvalid || errors.areSaturdayHoursInvalid || errors.areSundayHoursInvalid) {
     commonServices.showToast({
       type: "danger",
       title: "Horários inválidos",

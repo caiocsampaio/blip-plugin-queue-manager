@@ -16,7 +16,7 @@ const defaultQueueData = {
       from: "",
       to: "",
     },
-    weekend: {
+    saturday: {
       from: "",
       to: "",
     },
@@ -25,18 +25,24 @@ const defaultQueueData = {
 };
 
 describe("Form Services", () => {
-  it("should be both false", () => {
+  it("should be all false", () => {
     const result = validateForm(defaultQueueData)
-    expect(result).toStrictEqual({ areWeekdayHoursInvalid: false, areWeekendHoursInvalid: false })
+    expect(result).toStrictEqual({ areWeekdayHoursInvalid: false, areSaturdayHoursInvalid: false,areSundayHoursInvalid: false})
   })
   it("areWeekdayHoursInvalid should be true", () => {
     defaultQueueData.days.mon = true;
     const result = validateForm(defaultQueueData)
-    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true, areWeekendHoursInvalid: false })
+    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true, areSaturdayHoursInvalid: false,areSundayHoursInvalid: false})
   })
-  it("areWeekendHoursInvalid should also be true", () => {
+  it("areSaturdayHoursInvalid should also be true", () => {
     defaultQueueData.days.sat = true;
     const result = validateForm(defaultQueueData)
-    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true, areWeekendHoursInvalid: true })
+    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true,areSaturdayHoursInvalid: true,areSundayHoursInvalid: false})
   })
+  it("areSundayHoursInvalid should also be true", () => {
+    defaultQueueData.days.sun = true;
+    const result = validateForm(defaultQueueData)
+    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true,areSaturdayHoursInvalid: false,areSundayHoursInvalid: true})
+  })
+  
 })

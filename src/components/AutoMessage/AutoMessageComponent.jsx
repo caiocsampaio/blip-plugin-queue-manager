@@ -29,7 +29,11 @@ const defaultQueueData = {
       from: ["", ""],
       to: ["", ""],
     },
-    weekend: {
+    saturday: {
+      from: ["", ""],
+      to: ["", ""],
+    },
+    sunday: {
       from: ["", ""],
       to: ["", ""],
     },

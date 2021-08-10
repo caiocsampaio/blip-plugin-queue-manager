@@ -28,7 +28,8 @@ export const WorkingHoursComponent = ({
   const [isSaveDisabled, setIsSaveDisabled] = useState(true);
   const [errors, setErrors] = useState({});
   const [isWeekdayDanger, setIsWeekdayDanger] = useState(false);
-  const [isWeekendDanger, setIsWeekendDanger] = useState(false);
+  const [isSaturdayDanger, setIsSaturdayDanger] = useState(false);
+  const [isSundayDanger, setIsSundayDanger] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [goBack, setGoBack] = useState(false);
   const [title, setTitle] = useState(queue.name);
@@ -49,11 +50,12 @@ export const WorkingHoursComponent = ({
     if (!!queueData) {
       const formValidation = validateForm(queueData);
       setIsWeekdayDanger(formValidation.areWeekdayHoursInvalid);
-      setIsWeekendDanger(formValidation.areWeekendHoursInvalid);
+      setIsSaturdayDanger(formValidation.areSaturdayHoursInvalid);
+      setIsSundayDanger(formValidation.areSundayHoursInvalid);
       setErrors(formValidation);
       setIsSaveDisabled(
         formValidation.areWeekdayHoursInvalid ||
-          formValidation.areWeekendHoursInvalid ||
+          formValidation.areSaturdayHoursInvalid ||
           _.isEqual(queueData, initialState) ||
           title === "Nova Fila"
       );
@@ -168,6 +170,7 @@ export const WorkingHoursComponent = ({
                     <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                       Dias de funcionamento
                     </BdsTypo>
+                    console.log("ola");
                   </div>
                   <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                     <div className="d-flex flex-column">
@@ -192,7 +195,24 @@ export const WorkingHoursComponent = ({
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row justify-content-center">
                         {Object.keys(queueData.days).map((day) => {
-                          return day === "sat" || day === "sun" ? (
+                          return day === "sat" ? (
+                            <div className="d-flex flex-column m-2" key={day}>
+                              <BdsSwitch
+                                name={`${day}`}
+                                refer={`${day}-switch`}
+                                checked={queueData.days[day]}
+                                onBdsChange={handleSwitchChange}
+                              />
+                              <span className="d-flex justify-content-center">
+                                {translate[day]}
+                              </span>
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
+                      <div className="d-flex flex-row justify-content-center">
+                        {Object.keys(queueData.days).map((day) => {
+                          return day === "sun" ? (
                             <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
                                 name={`${day}`}
@@ -234,10 +254,22 @@ export const WorkingHoursComponent = ({
                     <BdsInput
                       // @ts-ignore
                       type="time"
-                      value={queueData.hours.weekend.from}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendFrom, e)}
+                      value={queueData.hours.saturday.from}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleSaturdayFrom, e)}
                       onBdsOnBlur={handleInputBlur}
-                      danger={isWeekendDanger}
+                      danger={isSaturdayDanger}
+                    />
+                  </div>
+                </div>
+                <div className="d-flex flex-row justify-content-center mt-1">
+                  <div>
+                    <BdsInput
+                      // @ts-ignore
+                      type="time"
+                      value={queueData.hours.sunday.from}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleSundayFrom, e)}
+                      onBdsOnBlur={handleInputBlur}
+                      danger={isSaturdayDanger}
                     />
                   </div>
                 </div>
@@ -265,10 +297,22 @@ export const WorkingHoursComponent = ({
                     <BdsInput
                       // @ts-ignore
                       type="time"
-                      value={queueData.hours.weekend.to}
-                      onBdsChange={(e) => handleHoursChanges(helperServices.handleWeekendTo, e)}
+                      value={queueData.hours.saturday.to}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleSaturdayTo, e)}
                       onBdsOnBlur={handleInputBlur}
-                      danger={isWeekendDanger}
+                      danger={isSaturdayDanger}
+                    />
+                  </div>
+                </div>
+                <div className="d-flex flex-row justify-content-center mt-1">
+                  <div>
+                    <BdsInput
+                      // @ts-ignore
+                      type="time"
+                      value={queueData.hours.sunday.to}
+                      onBdsChange={(e) => handleHoursChanges(helperServices.handleSundayTo, e)}
+                      onBdsOnBlur={handleInputBlur}
+                      danger={isSundayDanger} 
                     />
                   </div>
                 </div>

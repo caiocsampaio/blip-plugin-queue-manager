@@ -13,10 +13,17 @@ const handleWeekdaysFrom = (e, queueData, setQueueData) => {
   setQueueData(newQueueData);
 };
 
-const handleWeekendFrom = (e, queueData, setQueueData) => {
+const handleSaturdayFrom = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.from = value;
+  newQueueData.hours.saturday.from = value;
+  setQueueData(newQueueData);
+};
+
+const handleSundayFrom = (e, queueData, setQueueData) => {
+  const value = e.target.value;
+  let newQueueData = { ...queueData };
+  newQueueData.hours.sunday.from = value;
   setQueueData(newQueueData);
 };
 
@@ -27,18 +34,28 @@ const handleWeekdaysTo = (e, queueData, setQueueData) => {
   setQueueData(newQueueData);
 };
 
-const handleWeekendTo = (e, queueData, setQueueData) => {
+const handleSaturdayTo = (e, queueData, setQueueData) => {
   const value = e.target.value;
   let newQueueData = { ...queueData };
-  newQueueData.hours.weekend.to = value;
+  newQueueData.hours.saturday.to = value;
+  setQueueData(newQueueData);
+};
+
+
+const handleSundayTo = (e, queueData, setQueueData) => {
+  const value = e.target.value;
+  let newQueueData = { ...queueData };
+  newQueueData.hours.sunday.to = value;
   setQueueData(newQueueData);
 };
 
 const helperServices = {
   sortQueues,
   handleWeekdaysFrom,
-  handleWeekendFrom,
+  handleSundayFrom,
+  handleSaturdayFrom,
   handleWeekdaysTo,
-  handleWeekendTo,
+  handleSaturdayTo,
+  handleSundayTo
 };
 export default helperServices;
