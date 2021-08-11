@@ -170,7 +170,6 @@ export const WorkingHoursComponent = ({
                     <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                       Dias de funcionamento
                     </BdsTypo>
-                    console.log("ola");
                   </div>
                   <BdsTypo variant="fs-14" bold="bold" className="hydrated">
                     <div className="d-flex flex-column">

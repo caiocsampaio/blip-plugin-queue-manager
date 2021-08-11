@@ -2,38 +2,24 @@
 <testExecutions version="1">
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\api\__tests__\blipServices.test.js">
     <testCase name="Blip Services should set queue" duration="6"/>
-    <testCase name="Blip Services should change queue status" duration="2"/>
+    <testCase name="Blip Services should change queue status" duration="1"/>
     <testCase name="Blip Services should get queue resource" duration="1"/>
-    <testCase name="Blip Services should set resource successfully" duration="6"/>
+    <testCase name="Blip Services should set resource successfully" duration="2"/>
     <testCase name="Blip Services should set resource with error" duration="2"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\api\__tests__\formServices.test.js">
-    <testCase name="Form Services should be all false" duration="8"/>
+    <testCase name="Form Services should be all false" duration="4"/>
     <testCase name="Form Services areWeekdayHoursInvalid should be true" duration="1"/>
     <testCase name="Form Services areSaturdayHoursInvalid should also be true" duration="1"/>
-    <testCase name="Form Services areSundayHoursInvalid should also be true" duration="1">
-      <failure message="TypeError: Cannot read property &apos;from&apos; of undefined"><![CDATA[TypeError: Cannot read property 'from' of undefined
-    at validateForm (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\api\formServices.js:21:52)
-    at Object.<anonymous> (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\api\__tests__\formServices.test.js:44:20)
-    at Promise.then.completed (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\utils.js:390:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\utils.js:315:10)
-    at _callCircusTest (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\run.js:218:40)
-    at processTicksAndRejections (internal/process/task_queues.js:97:5)
-    at _runTest (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\run.js:155:3)
-    at _runTestsForDescribeBlock (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\run.js:66:9)
-    at _runTestsForDescribeBlock (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\run.js:60:9)
-    at run (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\run.js:25:3)
-    at runAndTransformResultsToJestFormat (C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:166:21)]]></failure>
-    </testCase>
+    <testCase name="Form Services areSundayHoursInvalid should also be true" duration="1"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\components\PageHeader\PageHeaderComponent.test.js">
-    <testCase name="PageHeader Should render" duration="85"/>
+    <testCase name="PageHeader Should render" duration="63"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\components\AutoMessage\AutoMessageComponent.test.js">
-    <testCase name="AutoMessageComponent should render" duration="136"/>
+    <testCase name="AutoMessageComponent should render" duration="103"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\pages\Home\HomePage.test.js">
-    <testCase name="HomePage should render" duration="232"/>
+    <testCase name="HomePage should render" duration="132"/>
   </file>
 </testExecutions>

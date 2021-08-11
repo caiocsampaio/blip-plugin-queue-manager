@@ -20,6 +20,11 @@ const defaultQueueData = {
       from: "",
       to: "",
     },
+    sunday: {
+      from: "",
+      to: "",
+    },
+
   },
   autoMessage: "",
 };
@@ -42,7 +47,7 @@ describe("Form Services", () => {
   it("areSundayHoursInvalid should also be true", () => {
     defaultQueueData.days.sun = true;
     const result = validateForm(defaultQueueData)
-    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true,areSaturdayHoursInvalid: false,areSundayHoursInvalid: true})
+    expect(result).toStrictEqual({ areWeekdayHoursInvalid: true,areSaturdayHoursInvalid: true,areSundayHoursInvalid: true})
   })
   
 })
