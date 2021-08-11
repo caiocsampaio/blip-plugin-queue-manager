@@ -47,7 +47,7 @@ export const AutoMessageComponent = ({ queueId }) => {
 
   useEffect(() => {
     if (queueName) {
-      let data = resource[queueName];
+      let data = resource[queueId];
       if (!data) {
         data = constants.defaultQueueData;
       }
