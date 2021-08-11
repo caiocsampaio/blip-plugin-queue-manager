@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\api\__tests__\blipServices.test.js">
-    <testCase name="Blip Services should set queue" duration="6"/>
-    <testCase name="Blip Services should change queue status" duration="1"/>
+    <testCase name="Blip Services should set queue" duration="5"/>
+    <testCase name="Blip Services should change queue status" duration="2"/>
     <testCase name="Blip Services should get queue resource" duration="1"/>
     <testCase name="Blip Services should set resource successfully" duration="2"/>
     <testCase name="Blip Services should set resource with error" duration="2"/>
@@ -14,12 +14,12 @@
     <testCase name="Form Services areSundayHoursInvalid should also be true" duration="1"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\components\PageHeader\PageHeaderComponent.test.js">
-    <testCase name="PageHeader Should render" duration="63"/>
-  </file>
-  <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\components\AutoMessage\AutoMessageComponent.test.js">
-    <testCase name="AutoMessageComponent should render" duration="103"/>
+    <testCase name="PageHeader Should render" duration="76"/>
   </file>
   <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\pages\Home\HomePage.test.js">
-    <testCase name="HomePage should render" duration="132"/>
+    <testCase name="HomePage should render" duration="158"/>
+  </file>
+  <file path="C:\Documentos\take\PluginLoja\blip-plugin-queue-manager\src\components\AutoMessage\AutoMessageComponent.test.js">
+    <testCase name="AutoMessageComponent should render" duration="89"/>
   </file>
 </testExecutions>

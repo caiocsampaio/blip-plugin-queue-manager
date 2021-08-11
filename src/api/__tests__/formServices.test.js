@@ -1,35 +1,10 @@
+import constants from 'api/constants';
 import { validateForm } from 'api/formServices';
-import React from 'react';
 
-const defaultQueueData = {
-  days: {
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: false,
-    fri: false,
-    sat: false,
-    sun: false,
-  },
-  hours: {
-    weekdays: {
-      from: "",
-      to: "",
-    },
-    saturday: {
-      from: "",
-      to: "",
-    },
-    sunday: {
-      from: "",
-      to: "",
-    },
-
-  },
-  autoMessage: "",
-};
+ 
 
 describe("Form Services", () => {
+  let defaultQueueData = constants.defaultQueueData;
   it("should be all false", () => {
     const result = validateForm(defaultQueueData)
     expect(result).toStrictEqual({ areWeekdayHoursInvalid: false, areSaturdayHoursInvalid: false,areSundayHoursInvalid: false})
