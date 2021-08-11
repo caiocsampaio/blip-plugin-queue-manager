@@ -194,24 +194,7 @@ export const WorkingHoursComponent = ({
                     <div className="d-flex flex-column">
                       <div className="d-flex flex-row justify-content-center">
                         {Object.keys(queueData.days).map((day) => {
-                          return day === "sat" ? (
-                            <div className="d-flex flex-column m-2" key={day}>
-                              <BdsSwitch
-                                name={`${day}`}
-                                refer={`${day}-switch`}
-                                checked={queueData.days[day]}
-                                onBdsChange={handleSwitchChange}
-                              />
-                              <span className="d-flex justify-content-center">
-                                {translate[day]}
-                              </span>
-                            </div>
-                          ) : null;
-                        })}
-                      </div>
-                      <div className="d-flex flex-row justify-content-center">
-                        {Object.keys(queueData.days).map((day) => {
-                          return day === "sun" ? (
+                          return day === "sat" || day === "sun" ? (
                             <div className="d-flex flex-column m-2" key={day}>
                               <BdsSwitch
                                 name={`${day}`}
