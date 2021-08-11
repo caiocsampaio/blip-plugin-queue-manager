@@ -15,7 +15,7 @@ const defaultQueue = {
 
 jest.mock('api/iframeServices', () => jest.fn());
 iframeServices.setQueue = jest.fn(async () => true)
-iframeServices.getResource = jest.fn(async () => constants.defaultResource)
+iframeServices.getResource = jest.fn(async () => constants.defaultResource.wppsaquenaologado)
 
 describe("Blip Services", () => {
   it("should set queue", async () => {
@@ -30,7 +30,7 @@ describe("Blip Services", () => {
 
   it("should get queue resource", async () => {
     const response = await blipServices.getQueueResource();
-    expect(response).toBe(constants.defaultResource);
+    expect(response).toBe(constants.defaultResource.wppsaquenaologado);
   })
 
   it("should set resource successfully", async () => {

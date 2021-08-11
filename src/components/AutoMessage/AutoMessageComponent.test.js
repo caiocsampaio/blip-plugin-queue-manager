@@ -1,12 +1,39 @@
 import { act, getByTestId, getByText, render, screen, waitFor, waitForElement } from '@testing-library/react';
 import blipServices from 'api/blipServices';
-import constants from 'api/constants';
 import iframeServices from 'api/iframeServices';
 import { ConfigProvider } from 'contexts/ConfigContext';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AutoMessageComponent } from './AutoMessageComponent';
 
+const defaultResource = {
+  wppsaquenaologado: {
+    days: {
+      mon: false,
+      tue: false,
+      wed: false,
+      thu: false,
+      fri: false,
+      sat: false,
+      sun: false,
+    },
+    hours: {
+      weekdays: {
+        from: ["", ""],
+        to: ["", ""],
+      },
+      saturday: {
+        from: ["", ""],
+        to: ["", ""],
+      },
+      sunday: {
+        from: ["", ""],
+        to: ["", ""],
+      },
+    },
+    autoMessage: "",
+  }
+};
 
 const defaultQueue = {
   id: "wppsaquenaologado",
@@ -22,7 +49,7 @@ describe("AutoMessageComponent", () => {
   iframeServices.getQueue = jest.fn(async () => defaultQueue)
 
   jest.mock('api/blipServices', () => jest.fn());
-  blipServices.getQueueResource = jest.fn(async () => constants.defaultResource)
+  blipServices.getQueueResource = jest.fn(async () => defaultResource)
 
 
   it("should render", async () => {

@@ -1,34 +1,34 @@
 const defaultResource = {
-    wppsaquenaologado: {
-      days: {
-        mon: false,
-        tue: false,
-        wed: false,
-        thu: false,
-        fri: false,
-        sat: false,
-        sun: false,
+  wppsaquenaologado: {
+    days: {
+      mon: false,
+      tue: false,
+      wed: false,
+      thu: false,
+      fri: false,
+      sat: false,
+      sun: false,
+    },
+    hours: {
+      weekdays: {
+        from: "",
+        to: "",
       },
-      hours: {
-        weekdays: {
-          from: ["", ""],
-          to: ["", ""],
-        },
-        saturday: {
-          from: ["", ""],
-          to: ["", ""],
-        },
-        sunday: {
-          from: ["", ""],
-          to: ["", ""],
-        },
+      saturday: {
+        from: "",
+        to: "",
       },
-      autoMessage: "",
-    }
-  };
-
-  const constants = {
-      defaultResource
+      sunday: {
+        from: "",
+        to: "",
+      },
+    },
+    autoMessage: "",
   }
+};
+
+const constants = {
+  defaultResource
+}
 
 export default constants;

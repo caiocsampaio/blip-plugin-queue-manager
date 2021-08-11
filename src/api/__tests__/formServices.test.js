@@ -4,7 +4,7 @@ import { validateForm } from 'api/formServices';
  
 
 describe("Form Services", () => {
-  let defaultQueueData = constants.defaultQueueData;
+  var defaultQueueData = constants.defaultResource.wppsaquenaologado;
   it("should be all false", () => {
     const result = validateForm(defaultQueueData)
     expect(result).toStrictEqual({ areWeekdayHoursInvalid: false, areSaturdayHoursInvalid: false,areSundayHoursInvalid: false})
