@@ -1,5 +1,6 @@
 import blipServices from "api/blipServices";
 import commonServices from "api/commonServices";
+import constants from "api/constants";
 import { showFeedbackInvalidAutoMessageForm } from "api/formServices";
 import iframeService from "api/iframeServices";
 import {
@@ -14,29 +15,7 @@ import { ConfigContext } from "contexts/ConfigContext";
 import React, { useContext, useEffect, useState } from "react";
 import { Prompt, useHistory } from "react-router-dom";
 
-const defaultQueueData = {
-  days: {
-    mon: false,
-    tue: false,
-    wed: false,
-    thu: false,
-    fri: false,
-    sat: false,
-    sun: false,
-  },
-  hours: {
-    weekdays: {
-      from: ["", ""],
-      to: ["", ""],
-    },
-    weekend: {
-      from: ["", ""],
-      to: ["", ""],
-    },
-  },
-  autoMessage: "",
-};
-
+ 
 export const AutoMessageComponent = ({ queueId }) => {
   const history = useHistory();
   const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
@@ -68,9 +47,9 @@ export const AutoMessageComponent = ({ queueId }) => {
 
   useEffect(() => {
     if (queueName) {
-      let data = resource[queueName];
+      let data = resource[queueId];
       if (!data) {
-        data = defaultQueueData;
+        data = constants.defaultQueueData;
       }
       setQueueData(data);
       setInitialState(data);

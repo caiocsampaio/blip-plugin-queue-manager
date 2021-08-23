@@ -1,6 +1,6 @@
 import blipServices from 'api/blipServices';
+import constants from 'api/constants';
 import iframeServices from 'api/iframeServices';
-import React from 'react';
 
 const defaultQueue = {
   id: "wppsaquenaologado",
@@ -11,34 +11,11 @@ const defaultQueue = {
   Priority: 0,
 };
 
-const defaultResource = {
-  wppsaquenaologado: {
-    days: {
-      mon: false,
-      tue: false,
-      wed: false,
-      thu: false,
-      fri: false,
-      sat: false,
-      sun: false,
-    },
-    hours: {
-      weekdays: {
-        from: ["", ""],
-        to: ["", ""],
-      },
-      weekend: {
-        from: ["", ""],
-        to: ["", ""],
-      },
-    },
-    autoMessage: "",
-  }
-};
+ 
 
 jest.mock('api/iframeServices', () => jest.fn());
 iframeServices.setQueue = jest.fn(async () => true)
-iframeServices.getResource = jest.fn(async () => defaultResource)
+iframeServices.getResource = jest.fn(async () => constants.defaultResource.wppsaquenaologado)
 
 describe("Blip Services", () => {
   it("should set queue", async () => {
@@ -53,7 +30,7 @@ describe("Blip Services", () => {
 
   it("should get queue resource", async () => {
     const response = await blipServices.getQueueResource();
-    expect(response).toBe(defaultResource);
+    expect(response).toBe(constants.defaultResource.wppsaquenaologado);
   })
 
   it("should set resource successfully", async () => {

@@ -11,7 +11,6 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{js,jsx}'],
   testResultsProcessor: "jest-sonar-reporter",
   transform: {
-    '^.+\\.(ts|tsx)?$': 'ts-jest',
     "^.+\\.(js|jsx)$": "babel-jest",
   },
   transformIgnorePatterns: ["node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"],
